@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>안산광덕 로타리클럽 · 2026-27년도 첫 주회 차기회장 인사말</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1b3a70; --navy-cap:#2f5390; --title:#16346e;
+    --accent:#1a4b9c; --gold:#F7A81B; --ink:#222; --frame:#e9edf4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+    background:#8a8f98;display:flex;flex-direction:column;align-items:center;
+    padding:24px 12px 60px;
+  }
+
+  /* 툴바 (인쇄 시 숨김) */
+  .toolbar{
+    width:210mm;max-width:96vw;margin-bottom:16px;display:flex;gap:12px;
+    align-items:center;flex-wrap:wrap;background:#fff;border-radius:12px;
+    padding:14px 18px;box-shadow:0 6px 18px rgba(0,0,0,.25);font-size:14px;color:#333;
+  }
+  .toolbar button{
+    background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px 18px;
+    font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:.2s;
+  }
+  .toolbar button:hover{background:var(--accent);}
+  .toolbar .hint{color:#666;line-height:1.5;}
+
+  /* 문서 본체 (A4 세로) */
+  .page{
+    width:210mm;min-height:297mm;background:#fff;display:flex;flex-direction:column;
+    overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.35);position:relative;
+  }
+  .page::before,.page::after{
+    content:"";position:absolute;top:0;bottom:0;width:12px;background:var(--frame);z-index:3;
+  }
+  .page::before{left:0;border-right:1.5px solid var(--navy);}
+  .page::after{right:0;border-left:1.5px solid var(--navy);}
+
+  /* 상단 바 */
+  .topbar{
+    background:linear-gradient(90deg,var(--navy-cap) 0 5%,var(--navy) 5% 95%,var(--navy-cap) 95% 100%);
+    color:#fff;display:flex;align-items:center;gap:22px;padding:13px 40px;min-height:76px;
+  }
+  .logo{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+  .logo .word{font-weight:900;font-size:32px;letter-spacing:-1px;color:#fff;}
+  .logo svg{width:56px;height:56px;display:block;}
+  .divider{width:2px;height:52px;background:rgba(255,255,255,.65);flex-shrink:0;}
+  .theme .en{font-size:24px;font-weight:900;font-style:italic;letter-spacing:1px;line-height:1.1;}
+  .theme .ko{font-size:18px;font-weight:500;margin-top:2px;}
+
+  /* 제목 영역 */
+  .head{text-align:center;padding:18px 50px 4px;position:relative;z-index:2;}
+  .head .kicker{font-size:17px;color:var(--accent);font-weight:500;letter-spacing:1px;}
+  .head h1{font-size:35px;color:var(--title);font-weight:900;margin:6px 0 11px;letter-spacing:2px;}
+  .head .rule{width:64px;height:4px;background:var(--gold);margin:0 auto 10px;border-radius:2px;}
+  .head .meta{font-size:14.5px;color:#666;line-height:1.6;}
+
+  /* 본문 */
+  .body{
+    flex:1;padding:6px 60px 8px;position:relative;z-index:2;
+  }
+  /* 로타리 휠 워터마크 */
+  .body .wm{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:58%;opacity:.05;z-index:-1;pointer-events:none;
+  }
+  .salute{
+    font-size:18px;line-height:1.72;color:var(--ink);font-weight:500;margin-bottom:5px;
+  }
+  .body p{font-size:17.5px;line-height:1.72;color:var(--ink);margin-bottom:8px;text-align:justify;}
+  .body b{font-weight:700;color:var(--title);}
+  .body .em{color:var(--accent);font-weight:700;}
+  .sign{
+    text-align:right;margin-top:18px;font-size:21px;font-weight:700;color:var(--title);
+  }
+  .sign .small{display:block;font-size:15px;font-weight:500;color:#666;margin-bottom:4px;}
+
+  /* 하단 바 */
+  .botbar{
+    background:linear-gradient(90deg,var(--navy-cap) 0 5%,var(--navy) 5% 95%,var(--navy-cap) 95% 100%);
+    color:#fff;text-align:center;font-size:18px;font-weight:700;letter-spacing:1px;
+    padding:13px 40px;min-height:50px;display:flex;align-items:center;justify-content:center;
+  }
+
+  @media screen and (max-width:840px){ .page{zoom:.66;} .toolbar{width:auto;} }
+  @media print{
+    @page{size:A4 portrait;margin:0;}
+    body{background:#fff;padding:0;}
+    .toolbar{display:none;}
+    .page{box-shadow:none;}
+    .page::before,.page::after,.topbar,.botbar{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <button onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <span class="hint">문구를 바꾸려면 아래 본문 문단을 직접 수정하세요. 강조는 <b>&lt;b&gt;</b> 또는 <b>&lt;span class="em"&gt;</b> 사용.</span>
+  </div>
+
+  <div class="page">
+
+    <!-- 상단 바 -->
+    <header class="topbar">
+      <div class="logo">
+        <span class="word">Rotary</span>
+        <svg viewBox="0 0 100 100" aria-label="Rotary wheel">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#F7A81B" stroke-width="14" stroke-dasharray="6.4 4.6"/>
+          <circle cx="50" cy="50" r="38" fill="#F7A81B"/>
+          <circle cx="50" cy="50" r="30" fill="#1b3a70"/>
+          <g stroke="#F7A81B" stroke-width="4.5" stroke-linecap="round">
+            <line x1="50" y1="50" x2="50" y2="20"/><line x1="50" y1="50" x2="50" y2="80"/>
+            <line x1="50" y1="50" x2="75.98" y2="35"/><line x1="50" y1="50" x2="75.98" y2="65"/>
+            <line x1="50" y1="50" x2="24.02" y2="35"/><line x1="50" y1="50" x2="24.02" y2="65"/>
+          </g>
+          <circle cx="50" cy="50" r="8" fill="#F7A81B"/>
+          <rect x="48" y="41" width="4" height="9" fill="#1b3a70"/>
+        </svg>
+      </div>
+      <div class="divider"></div>
+      <div class="theme">
+        <div class="en">CREATE LASTING IMPACT</div>
+        <div class="ko">지속적인 영향력을</div>
+      </div>
+    </header>
+
+    <!-- 제목 -->
+    <div class="head">
+      <div class="kicker">안산광덕 로타리클럽 · 국제로타리 3750지구</div>
+      <h1>2026-27년도 첫 주회 인사말</h1>
+      <div class="rule"></div>
+      <div class="meta">일시 : 2026년 7월 20일(월) 오후 6시 30분 &nbsp;|&nbsp; 장소 : 광덕로타리클럽 사무실</div>
+    </div>
+
+    <!-- 본문 -->
+    <article class="body">
+      <!-- 로타리 휠 워터마크 -->
+      <svg class="wm" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="42" fill="none" stroke="#1b3a70" stroke-width="14" stroke-dasharray="6.4 4.6"/>
+        <circle cx="50" cy="50" r="38" fill="#1b3a70"/>
+        <circle cx="50" cy="50" r="30" fill="#fff"/>
+        <g stroke="#1b3a70" stroke-width="4.5" stroke-linecap="round">
+          <line x1="50" y1="50" x2="50" y2="20"/><line x1="50" y1="50" x2="50" y2="80"/>
+          <line x1="50" y1="50" x2="75.98" y2="35"/><line x1="50" y1="50" x2="75.98" y2="65"/>
+          <line x1="50" y1="50" x2="24.02" y2="35"/><line x1="50" y1="50" x2="24.02" y2="65"/>
+        </g>
+        <circle cx="50" cy="50" r="8" fill="#1b3a70"/>
+      </svg>
+
+      <p class="salute">존경하는 <b>대승 김재창 회장</b>님, 직전회장 <b>거송 안경복</b> 회장님, 그리고 우리 클럽을 지켜 오신 여러 전임 회장님들과 안산광덕 로타리클럽 회원 여러분, 그리고 뜻깊은 자리를 함께해 주신 내빈 여러분께 진심으로 반갑다는 인사를 드립니다.</p>
+
+      <p>차기회장을 맡은 <b>재성 윤승노</b> 인사드립니다.</p>
+
+      <p>무더위가 한창인 계절에도 새 회기의 힘찬 첫걸음을 함께해 주신 회원 여러분께 깊이 감사드립니다. 오늘 이 첫 주회가 한 해의 봉사와 우정을 여는 뜻깊은 출발점이 되리라 믿습니다.</p>
+
+      <p>먼저, 2026-27년도 새로운 회기의 출범과 함께 클럽을 이끌어 주실 대승 김재창 회장님의 취임을 진심으로 축하드립니다. ‘<span class="em">함께하는 광덕</span>’이라는 회장님의 슬로건처럼, 우리가 함께 웃고 함께 봉사할 때 그 울림은 더욱 크고 깊어질 것입니다. 또한 지난 한 해 클럽을 위해 헌신해 주신 거송 안경복 직전회장님과, 오늘의 광덕을 있게 하신 전임 회장님들께도 존경과 감사의 마음을 전합니다.</p>
+
+      <p>차기회장으로서 저는 회장님을 가장 가까이에서 보좌하며, 선배 회장님들의 뜻을 이어 회원 한 분 한 분의 목소리에 귀 기울이겠습니다. 우리 클럽이 더욱 화합하고 성장하는 한 해가 되도록 맡은 자리에서 정성을 다하겠습니다.</p>
+
+      <p>아울러 이번 회기에 새롭게 우리 클럽의 가족이 되신 신입회원 여러분을 진심으로 환영합니다. 여러분의 합류가 광덕에 새로운 활력과 든든한 힘이 되어 주시리라 믿습니다.</p>
+
+      <p>국제로타리가 제시한 2026-27년도 테마 ‘<span class="em">지속적인 영향력을(Create Lasting Impact)</span>’처럼, 우리의 작은 손길 하나하나가 지역사회에 오래도록 이어지는 선한 영향력으로 남기를 소망합니다.</p>
+
+      <p>끝으로, 오늘 함께해 주신 회원 여러분과 가정에 늘 건강과 행복이 가득하시기를 기원합니다. 앞으로도 변함없는 관심과 참여로 함께해 주시기를 부탁드립니다.</p>
+
+      <p style="text-align:center;font-weight:500;">감사합니다.</p>
+
+      <div class="sign">
+        <span class="small">안산광덕 로타리클럽</span>
+        차기회장 &nbsp;재성 윤승노 &nbsp;드림
+      </div>
+    </article>
+
+    <footer class="botbar">안산광덕 로타리클럽 &nbsp;·&nbsp; 함께하는 광덕</footer>
+  </div>
+
+</body>
+</html>
