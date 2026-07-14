@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>안산광덕 로타리클럽 주회 안내 포스터</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1b3a70;        /* 상·하단 바 남색 */
+    --navy-cap:#2f5390;    /* 바 양끝 밝은 남색 */
+    --title:#16346e;       /* 제목 남색 */
+    --accent:#1a4b9c;      /* 슬로건·달력 파랑 */
+    --red:#d81f2a;         /* 강조(날짜) 빨강 */
+    --gold:#F7A81B;        /* 로타리 골드 */
+    --ink:#232323;         /* 본문 글자 */
+    --frame:#e9edf4;       /* 좌우 테두리 밴드 */
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+    background:#8a8f98;
+    display:flex;flex-direction:column;align-items:center;
+    padding:24px 12px 60px;
+  }
+
+  /* ---------- 화면용 툴바 (인쇄 시 숨김) ---------- */
+  .toolbar{
+    width:210mm;max-width:96vw;margin-bottom:16px;
+    display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+    background:#fff;border-radius:12px;padding:14px 18px;
+    box-shadow:0 6px 18px rgba(0,0,0,.25);font-size:14px;color:#333;
+  }
+  .toolbar button{
+    background:var(--navy);color:#fff;border:none;border-radius:8px;
+    padding:10px 18px;font-size:15px;font-weight:700;cursor:pointer;
+    font-family:inherit;transition:.2s;
+  }
+  .toolbar button:hover{background:var(--accent);}
+  .toolbar .hint{color:#666;line-height:1.5;}
+  .toolbar code{background:#f0f2f6;padding:2px 6px;border-radius:5px;color:#b0306a;}
+
+  /* ---------- 포스터 본체 (A4 세로) ---------- */
+  .poster{
+    width:210mm;min-height:297mm;background:#fff;
+    display:flex;flex-direction:column;overflow:hidden;
+    box-shadow:0 10px 40px rgba(0,0,0,.35);
+    position:relative;
+  }
+  /* 좌우 테두리 밴드 */
+  .poster::before,.poster::after{
+    content:"";position:absolute;top:0;bottom:0;width:12px;
+    background:var(--frame);z-index:3;
+  }
+  .poster::before{left:0;border-right:1.5px solid var(--navy);}
+  .poster::after{right:0;border-left:1.5px solid var(--navy);}
+
+  /* 상단 바 */
+  .topbar{
+    background:linear-gradient(90deg,var(--navy-cap) 0 5%,var(--navy) 5% 95%,var(--navy-cap) 95% 100%);
+    color:#fff;display:flex;align-items:center;gap:22px;
+    padding:20px 40px;min-height:96px;
+  }
+  .logo{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+  .logo .word{font-weight:900;font-size:34px;letter-spacing:-1px;color:#fff;}
+  .logo svg{width:60px;height:60px;display:block;}
+  .divider{width:2px;height:56px;background:rgba(255,255,255,.65);flex-shrink:0;}
+  .theme .en{font-size:26px;font-weight:900;font-style:italic;letter-spacing:1px;line-height:1.1;}
+  .theme .ko{font-size:19px;font-weight:500;margin-top:2px;}
+
+  /* 본문 */
+  .body{
+    flex:1;display:flex;flex-direction:column;
+    padding:34px 50px 26px;position:relative;z-index:2;
+  }
+  .title{
+    text-align:center;color:var(--title);font-weight:900;
+    font-size:38px;line-height:1.4;margin-bottom:26px;
+  }
+  .lead{font-size:19px;color:var(--ink);margin-bottom:10px;}
+  .slogan{font-size:32px;font-weight:800;color:var(--accent);margin-bottom:20px;}
+  .para{font-size:19px;line-height:1.95;color:var(--ink);margin-bottom:18px;}
+  .info{list-style:none;margin:4px 0 18px;}
+  .info li{font-size:20px;color:var(--ink);line-height:2;display:flex;gap:8px;}
+  .info li::before{content:"■";color:var(--navy);font-size:15px;line-height:2.1;}
+  .info b{font-weight:700;}
+
+  /* 달력 */
+  .calendar{margin:14px auto 6px;width:80%;text-align:center;}
+  .cal-head{font-size:28px;color:var(--accent);margin-bottom:8px;}
+  .cal-head .m{font-weight:900;}
+  .cal-head .t{font-weight:500;}
+  .cal-rule{height:3px;background:var(--navy);margin:6px 0;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
+  .cal-day{font-size:27px;color:var(--accent);font-weight:500;padding:6px 0;}
+  .cal-date{padding:6px 0 4px;align-self:start;text-align:center;}
+  .cal-num{font-size:30px;color:var(--accent);font-weight:500;line-height:1.1;}
+  .cal-date.hl .cal-num{color:var(--red);font-weight:900;}
+  .cal-note{font-size:14px;color:var(--red);font-weight:700;margin-top:4px;white-space:nowrap;}
+
+  /* 하단 바 */
+  .botbar{
+    background:linear-gradient(90deg,var(--navy-cap) 0 5%,var(--navy) 5% 95%,var(--navy-cap) 95% 100%);
+    color:#fff;text-align:center;font-size:25px;font-weight:800;
+    padding:22px 40px;min-height:76px;display:flex;align-items:center;justify-content:center;
+  }
+
+  /* 반응형(화면 미리보기) */
+  @media screen and (max-width:840px){
+    .poster{zoom:.66;}
+    .toolbar{width:auto;}
+  }
+
+  /* 인쇄 / PDF */
+  @media print{
+    @page{size:A4 portrait;margin:0;}
+    body{background:#fff;padding:0;}
+    .toolbar{display:none;}
+    .poster{box-shadow:none;width:210mm;min-height:297mm;}
+    .poster::before,.poster::after{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+  <!-- ===== 툴바 (인쇄물에는 안 나옴) ===== -->
+  <div class="toolbar">
+    <button onclick="window.print()">🖨 인쇄 / PDF 저장</button>
+    <span class="hint">
+      내용을 바꾸려면 이 파일 아래쪽 <code>const CONFIG</code> 부분에서 날짜·장소·문구만 수정하세요.
+      날짜(<code>date</code>)만 바꾸면 <b>요일·달력이 자동</b>으로 맞춰집니다.
+    </span>
+  </div>
+
+  <!-- ===== 포스터 ===== -->
+  <div class="poster" id="poster">
+
+    <header class="topbar">
+      <div class="logo">
+        <span class="word">Rotary</span>
+        <!-- 로타리 휠 (인라인 SVG · 오프라인/인쇄에서도 표시) -->
+        <svg viewBox="0 0 100 100" aria-label="Rotary wheel">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#F7A81B" stroke-width="14" stroke-dasharray="6.4 4.6"/>
+          <circle cx="50" cy="50" r="38" fill="#F7A81B"/>
+          <circle cx="50" cy="50" r="30" fill="#1b3a70"/>
+          <g stroke="#F7A81B" stroke-width="4.5" stroke-linecap="round">
+            <line x1="50" y1="50" x2="50" y2="20"/>
+            <line x1="50" y1="50" x2="50" y2="80"/>
+            <line x1="50" y1="50" x2="75.98" y2="35"/>
+            <line x1="50" y1="50" x2="75.98" y2="65"/>
+            <line x1="50" y1="50" x2="24.02" y2="35"/>
+            <line x1="50" y1="50" x2="24.02" y2="65"/>
+          </g>
+          <circle cx="50" cy="50" r="8" fill="#F7A81B"/>
+          <rect x="48" y="41" width="4" height="9" fill="#1b3a70"/>
+        </svg>
+      </div>
+      <div class="divider"></div>
+      <div class="theme">
+        <div class="en" id="themeEn"></div>
+        <div class="ko" id="themeKo"></div>
+      </div>
+    </header>
+
+    <main class="body">
+      <h1 class="title" id="title"></h1>
+      <p class="lead" id="lead"></p>
+      <p class="slogan" id="slogan"></p>
+      <p class="para" id="intro"></p>
+      <ul class="info">
+        <li><span><b>일시</b> : <span id="dateText"></span></span></li>
+        <li><span><b>장소</b> : <span id="placeText"></span></span></li>
+      </ul>
+      <p class="para" id="closing1"></p>
+      <p class="para" id="closing2"></p>
+
+      <section class="calendar">
+        <div class="cal-head"><span class="m" id="calMonth"></span> <span class="t" id="calTitle"></span></div>
+        <div class="cal-rule"></div>
+        <div class="cal-grid" id="calDays"></div>
+        <div class="cal-grid" id="calDates"></div>
+        <div class="cal-rule"></div>
+      </section>
+    </main>
+
+    <footer class="botbar" id="signature"></footer>
+  </div>
+
+<script>
+  /* ============================================================
+     ▼▼▼  여기만 고치면 됩니다  ▼▼▼
+     - date: "YYYY-MM-DD"  (요일과 아래 달력이 자동으로 계산됩니다)
+     - 문구를 바꾸면 포스터에 그대로 반영됩니다. 줄바꿈은 \n 으로.
+     ============================================================ */
+  const CONFIG = {
+    themeEn:  "CREATE LASTING IMPACT",
+    themeKo:  "지속적인 영향력을",
+
+    titleLine1: "안산광덕 로타리클럽",
+    titleLine2: "2026-27년도 첫 주회 안내",
+
+    lead:   "국제로타리 3750지구 광덕로타리클럽 첫 주회 안내",
+    slogan: "함께하는 광덕!",
+    intro:  "대승 김재창 회장님의 슬로건처럼 함께 웃고, 함께 봉사하며 새로운 한 해를 힘차게 시작하는 첫 주회에 회원 여러분을 초대합니다.",
+
+    date:  "2026-07-20",      // 주회 날짜
+    time:  "오후 6시 30분",
+    place: "광덕로타리클럽 사무실",
+
+    closing1: "첫 만남이 더욱 뜻깊은 시간이 될 수 있도록 회원 여러분의 많은 참석과 따뜻한 응원 부탁드립니다.",
+    closing2: "함께하는 광덕! 함께하면 더 큰 봉사가 됩니다.\n감사합니다.",
+
+    calTitle: "광덕로타리클럽 첫주회",   // 달력 제목 ("7월" 은 날짜에서 자동)
+    calNote:  "오후6시30분 클럽사무실",  // 강조된 날짜 밑 작은 글씨
+
+    signature: "안산 광덕로타리클럽 회장 대승 김재창 배상",
+  };
+  /* ▲▲▲  수정 끝  ▲▲▲ */
+
+  (function render(){
+    const c = CONFIG;
+    const $ = id => document.getElementById(id);
+    const nl2br = s => s.replace(/\n/g,'<br>');
+
+    $('themeEn').textContent = c.themeEn;
+    $('themeKo').textContent = c.themeKo;
+    $('title').innerHTML = c.titleLine1 + '<br>' + c.titleLine2;
+    $('lead').textContent = c.lead;
+    $('slogan').textContent = c.slogan;
+    $('intro').textContent = c.intro;
+    $('placeText').textContent = c.place;
+    $('closing1').textContent = c.closing1;
+    $('closing2').innerHTML = nl2br(c.closing2);
+    $('signature').textContent = c.signature;
+
+    // 날짜 → 요일 자동 계산
+    const [y,m,d] = c.date.split('-').map(Number);
+    const dt = new Date(y, m-1, d);
+    const dowKo = ['일','월','화','수','목','금','토'][dt.getDay()];
+    $('dateText').textContent = `${y}년 ${m}월 ${d}일(${dowKo}) ${c.time}`;
+
+    // 달력: 주회가 포함된 주(일~토)
+    $('calMonth').textContent = m + '월';
+    $('calTitle').textContent = c.calTitle;
+    const days = ['일','월','화','수','목','금','토'];
+    const sunday = new Date(y, m-1, d - dt.getDay());
+    const calDays = $('calDays'), calDates = $('calDates');
+    for(let i=0;i<7;i++){
+      const cell = new Date(sunday); cell.setDate(sunday.getDate()+i);
+      const dh = document.createElement('div');
+      dh.className='cal-day'; dh.textContent=days[i]; calDays.appendChild(dh);
+
+      const dd = document.createElement('div'); dd.className='cal-date';
+      const num = document.createElement('div'); num.className='cal-num';
+      num.textContent = cell.getDate();
+      dd.appendChild(num);
+      const isMeeting = cell.getFullYear()===y && cell.getMonth()===m-1 && cell.getDate()===d;
+      if(isMeeting){
+        dd.classList.add('hl');
+        const note = document.createElement('div');
+        note.className='cal-note'; note.textContent=c.calNote;
+        dd.appendChild(note);
+      }
+      calDates.appendChild(dd);
+    }
+
+    document.title = c.titleLine1 + ' ' + c.titleLine2;
+  })();
+</script>
+</body>
+</html>
