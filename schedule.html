@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>디자인재성 일정표</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family:'Malgun Gothic','맑은 고딕','Noto Sans KR',sans-serif; background:#eef1f5; margin:0; padding:20px; color:#1a1a1a; -webkit-text-size-adjust:100%; }
+
+  /* ---------- 상단 ---------- */
+  .wrap { max-width:1080px; margin:0 auto; }
+  .apphead { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:3px solid #1f3a68; padding-bottom:12px; margin-bottom:14px; }
+  .apphead .brand { font-size:22px; font-weight:800; color:#1f3a68; letter-spacing:1px; }
+  .apphead .brand span { font-size:13px; font-weight:600; color:#5a6b85; letter-spacing:0; margin-left:8px; }
+  .apphead .cinfo { font-size:12px; color:#5a6b85; line-height:1.6; text-align:right; }
+
+  .toolbar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+  .toolbar button { background:#1f3a68; color:#fff; border:none; padding:10px 15px; border-radius:6px; font-size:14px; cursor:pointer; font-weight:600; font-family:inherit; }
+  .toolbar button.alt { background:#5a6b85; }
+  .toolbar button.ghost { background:#fff; color:#1f3a68; border:1px solid #c3ccdb; }
+  .toolbar button:hover { opacity:.9; }
+  .toolbar .sp { flex:1; }
+  .tabs { display:flex; gap:0; border:1px solid #c3ccdb; border-radius:6px; overflow:hidden; background:#fff; }
+  .tabs button { background:#fff; color:#1f3a68; border:none; border-right:1px solid #e2e6ee; border-radius:0; padding:10px 16px; }
+  .tabs button:last-child { border-right:none; }
+  .tabs button.on { background:#1f3a68; color:#fff; }
+
+  /* ---------- 요약 카드 ---------- */
+  .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:12px; }
+  .card { background:#fff; border:1px solid #dfe4ec; border-radius:8px; padding:12px 14px; }
+  .card .k { font-size:12px; color:#7d879b; font-weight:600; }
+  .card .v { font-size:24px; font-weight:800; color:#1f3a68; margin-top:2px; }
+  .card .v small { font-size:13px; font-weight:600; color:#5a6b85; margin-left:2px; }
+  .card.warn .v { color:#c0392b; }
+
+  /* ---------- 필터 ---------- */
+  .filters { display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:#fff; border:1px solid #dfe4ec; border-radius:8px; padding:10px 12px; margin-bottom:12px; }
+  .filters input, .filters select { font-family:inherit; font-size:13px; padding:7px 9px; border:1px solid #cfd6e0; border-radius:5px; background:#fff; color:#1a1a1a; }
+  .filters input.search { flex:1; min-width:140px; }
+  .filters .lbl { font-size:12px; color:#7d879b; font-weight:600; }
+  .filters button { font-family:inherit; font-size:13px; padding:7px 12px; border:1px solid #cfd6e0; background:#f6f8fb; color:#1f3a68; border-radius:5px; cursor:pointer; font-weight:600; }
+
+  /* ---------- 시트(출력 영역) ---------- */
+  .sheet { background:#fff; border:1px solid #dfe4ec; border-radius:8px; padding:18px 20px; box-shadow:0 2px 14px rgba(0,0,0,.06); }
+  .sheet-title { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:10px; flex-wrap:wrap; }
+  .sheet-title h2 { margin:0; font-size:19px; color:#1f3a68; font-weight:800; }
+  .sheet-title .nav { display:flex; gap:6px; align-items:center; }
+  .sheet-title .nav button { font-family:inherit; background:#f1f4f9; border:1px solid #cfd6e0; color:#1f3a68; width:34px; height:32px; border-radius:5px; cursor:pointer; font-size:15px; font-weight:700; }
+  .sheet-title .nav button.today { width:auto; padding:0 12px; font-size:13px; }
+  .print-only { display:none !important; }
+
+  /* ---------- 월간 달력 ---------- */
+  .cal { width:100%; border-collapse:collapse; table-layout:fixed; }
+  .cal th { background:#1f3a68; color:#fff; font-size:13px; padding:7px 0; font-weight:600; border:1px solid #1f3a68; }
+  .cal th.sun { color:#ffc9c9; } .cal th.sat { color:#bfd8ff; }
+  .cal td { border:1px solid #dfe4ec; vertical-align:top; height:104px; padding:4px; }
+  .cal td.off { background:#fafbfd; }
+  .cal td.today { background:#fff8e6; box-shadow:inset 0 0 0 2px #f0b429; }
+  .cal .dnum { font-size:12px; font-weight:700; color:#44506b; margin-bottom:3px; display:flex; justify-content:space-between; align-items:center; }
+  .cal .dnum .add { color:#b6bdcb; cursor:pointer; font-size:14px; font-weight:700; }
+  .cal .dnum .add:hover { color:#1f3a68; }
+  .cal td.off .dnum { color:#b6bdcb; }
+  .cal .dnum.sun { color:#c0392b; } .cal .dnum.sat { color:#2b62b8; }
+  .chip { display:block; font-size:11.5px; line-height:1.35; padding:3px 5px; border-radius:4px; margin-bottom:3px; cursor:pointer; border-left:3px solid #1f3a68; background:#eef2f8; color:#22314f; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .chip b { font-weight:700; }
+  .chip.done { opacity:.55; text-decoration:line-through; }
+  .chip.hold { opacity:.65; }
+  .more { font-size:11px; color:#7d879b; cursor:pointer; padding-left:3px; }
+
+  /* ---------- 주간 ---------- */
+  .week { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; }
+  .wday { border:1px solid #dfe4ec; border-radius:8px; min-height:150px; background:#fff; }
+  .wday .wh { background:#f1f4f9; border-bottom:1px solid #dfe4ec; padding:6px 8px; font-size:12.5px; font-weight:700; color:#44506b; border-radius:8px 8px 0 0; display:flex; justify-content:space-between; }
+  .wday.today .wh { background:#1f3a68; color:#fff; }
+  .wday .wb { padding:6px; }
+  .wday .wh .add { cursor:pointer; color:#b6bdcb; font-weight:700; }
+  .wday.today .wh .add { color:#c9d6ee; }
+
+  /* ---------- 목록 ---------- */
+  table.list { width:100%; border-collapse:collapse; font-size:13px; }
+  table.list th { background:#1f3a68; color:#fff; padding:9px 6px; font-weight:600; border:1px solid #1f3a68; font-size:12.5px; }
+  table.list td { border:1px solid #dfe4ec; padding:8px 7px; vertical-align:middle; }
+  table.list tr:nth-child(even) td { background:#fafbfd; }
+  table.list tr.rowdone td { color:#98a1b2; }
+  table.list td.c { text-align:center; }
+  table.list tr.clickable { cursor:pointer; }
+  table.list tr.clickable:hover td { background:#fff8e6; }
+  .badge { display:inline-block; font-size:11px; font-weight:700; padding:2px 7px; border-radius:10px; border:1px solid transparent; white-space:nowrap; }
+  .empty { text-align:center; color:#98a1b2; padding:40px 10px; font-size:14px; line-height:1.8; }
+
+  /* ---------- 모달 ---------- */
+  .mask { position:fixed; inset:0; background:rgba(20,28,45,.5); display:none; align-items:flex-start; justify-content:center; padding:24px 12px; z-index:100; overflow:auto; }
+  .mask.on { display:flex; }
+  .modal { background:#fff; border-radius:10px; width:100%; max-width:560px; padding:20px 22px; box-shadow:0 10px 40px rgba(0,0,0,.3); }
+  .modal h3 { margin:0 0 14px; color:#1f3a68; font-size:18px; border-bottom:2px solid #1f3a68; padding-bottom:8px; }
+  .frm { display:grid; grid-template-columns:1fr 1fr; gap:10px 12px; }
+  .frm .f { display:flex; flex-direction:column; gap:4px; }
+  .frm .f.full { grid-column:1 / -1; }
+  .frm label { font-size:12px; color:#5a6b85; font-weight:700; }
+  .frm input, .frm select, .frm textarea { font-family:inherit; font-size:14px; padding:8px 9px; border:1px solid #cfd6e0; border-radius:5px; background:#fff; color:#1a1a1a; width:100%; }
+  .frm textarea { resize:vertical; min-height:56px; }
+  .frm input:focus, .frm select:focus, .frm textarea:focus { outline:none; border-color:#1f3a68; background:#fffdf3; }
+  .mbtns { display:flex; gap:8px; margin-top:16px; }
+  .mbtns button { font-family:inherit; flex:1; padding:11px; border:none; border-radius:6px; font-size:14px; font-weight:700; cursor:pointer; }
+  .mbtns .ok { background:#1f3a68; color:#fff; }
+  .mbtns .cancel { background:#eef1f5; color:#44506b; }
+  .mbtns .del { background:#fff; color:#c0392b; border:1px solid #e6b5ae; flex:0 0 84px; }
+
+  /* ---------- 하단 ---------- */
+  .company { margin-top:22px; border-top:2px solid #1f3a68; padding-top:12px; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap; }
+  .company .c-name { font-size:18px; font-weight:800; color:#1f3a68; }
+  .company .c-info { font-size:12px; line-height:1.7; color:#444; text-align:right; }
+  .hint { color:#8a93a5; font-size:11.5px; margin-top:8px; line-height:1.7; }
+  .toast { position:fixed; left:50%; bottom:26px; transform:translateX(-50%); background:#1f3a68; color:#fff; padding:11px 20px; border-radius:24px; font-size:13.5px; font-weight:600; opacity:0; pointer-events:none; transition:opacity .25s; z-index:200; }
+  .toast.on { opacity:1; }
+
+  /* ---------- 모바일 ---------- */
+  @media (max-width:760px) {
+    body { padding:10px; }
+    .apphead { flex-direction:column; align-items:flex-start; gap:4px; }
+    .apphead .cinfo { text-align:left; }
+    .toolbar button { flex:1 1 30%; font-size:13px; padding:11px 4px; }
+    .tabs { flex:1 1 100%; }
+    .tabs button { flex:1; padding:11px 4px; }
+    .cards { grid-template-columns:repeat(2,1fr); }
+    .sheet { padding:12px 10px; }
+    .cal td { height:auto; min-height:64px; padding:3px 2px; }
+    .cal .dnum .add { display:none; }
+    .chip { font-size:10px; padding:2px 3px; border-left-width:2px; }
+    .chip .ctime { display:none; }
+    .week { grid-template-columns:1fr; }
+    .wday { min-height:0; }
+    table.list thead { display:none; }
+    table.list, table.list tbody, table.list tr, table.list td { display:block; width:100%; }
+    table.list tr { border:1px solid #dfe4ec; border-radius:8px; margin:8px 0; padding:6px 12px; background:#fff; }
+    table.list td { border:none; border-bottom:1px dashed #eef1f5; padding:7px 0; display:flex; justify-content:space-between; gap:10px; text-align:right; background:transparent !important; }
+    table.list td:last-child { border-bottom:none; }
+    table.list td::before { content:attr(data-h); color:#8a93a5; font-weight:600; font-size:12px; text-align:left; }
+    .frm { grid-template-columns:1fr; }
+    .modal { padding:16px 14px; }
+  }
+
+  /* ---------- 인쇄 / 캡처 ---------- */
+  @media print {
+    body { background:#fff; padding:0; }
+    .toolbar, .filters, .mask, .hint, .toast, .cal .dnum .add, .wday .wh .add, .cards { display:none !important; }
+    .sheet-title .nav { display:none !important; }
+    .company.print-only { display:flex !important; }
+    .sheet { box-shadow:none; border:none; padding:0; }
+    .wrap { max-width:100%; }
+    .cal td { height:auto; min-height:86px; }
+    .chip { border-left-width:3px; }
+    @page { size:A4 landscape; margin:10mm; }
+  }
+  body.capturing .toolbar, body.capturing .filters, body.capturing .hint,
+  body.capturing .cal .dnum .add, body.capturing .wday .wh .add,
+  body.capturing .sheet-title .nav { display:none !important; }
+  body.capturing .company.print-only { display:flex !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="apphead">
+    <div class="brand">디자인재성 <span>작업 일정표 · Schedule</span></div>
+    <div class="cinfo">
+      대표 김영남 · TEL 1566-9803 · H.P 010-9451-9804<br>
+      경기도 화성시 송산면 용포로 126 · js1487@naver.com
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button onclick="openNew()">＋ 일정 추가</button>
+    <div class="tabs">
+      <button id="tab-month" class="on" onclick="setView('month')">월간</button>
+      <button id="tab-week" onclick="setView('week')">주간</button>
+      <button id="tab-list" onclick="setView('list')">목록</button>
+    </div>
+    <div class="sp"></div>
+    <button class="alt" onclick="window.print()">인쇄 / PDF</button>
+    <button class="alt" onclick="savePNG()">PNG 저장</button>
+    <button class="ghost" onclick="copyKakao()">카톡 문구 복사</button>
+    <button class="ghost" onclick="exportICS()">캘린더(.ics)</button>
+    <button class="ghost" onclick="exportJSON()">백업 저장</button>
+    <button class="ghost" onclick="document.getElementById('impfile').click()">백업 불러오기</button>
+    <input type="file" id="impfile" accept="application/json,.json" style="display:none" onchange="importJSON(this)">
+  </div>
+
+  <div class="cards">
+    <div class="card"><div class="k">오늘 일정</div><div class="v" id="c-today">0<small>건</small></div></div>
+    <div class="card"><div class="k">이번 주</div><div class="v" id="c-week">0<small>건</small></div></div>
+    <div class="card warn"><div class="k">미완료 (오늘 이전)</div><div class="v" id="c-late">0<small>건</small></div></div>
+    <div class="card"><div class="k">전체 등록</div><div class="v" id="c-all">0<small>건</small></div></div>
+  </div>
+
+  <div class="filters">
+    <input class="search" id="f-q" placeholder="업체·현장·작업내용 검색" oninput="render()">
+    <span class="lbl">구분</span>
+    <select id="f-type" onchange="render()"><option value="">전체</option></select>
+    <span class="lbl">상태</span>
+    <select id="f-status" onchange="render()"><option value="">전체</option></select>
+    <span class="lbl">담당</span>
+    <select id="f-staff" onchange="render()"><option value="">전체</option></select>
+    <button onclick="resetFilter()">초기화</button>
+  </div>
+
+  <div class="sheet" id="sheet">
+    <div class="sheet-title">
+      <h2 id="sheet-h">2026년 8월</h2>
+      <div class="nav">
+        <button onclick="move(-1)" title="이전">‹</button>
+        <button class="today" onclick="goToday()">오늘</button>
+        <button onclick="move(1)" title="다음">›</button>
+      </div>
+    </div>
+
+    <div id="view-month"></div>
+    <div id="view-week" style="display:none"></div>
+    <div id="view-list" style="display:none"></div>
+
+    <div class="company print-only">
+      <div class="c-name">디자인재성</div>
+      <div class="c-info">
+        대표 김영남 · TEL 1566-9803 · H.P 010-9451-9804 · FAX 0504-264-9804<br>
+        경기도 화성시 송산면 용포로 126 · js1487@naver.com
+      </div>
+    </div>
+  </div>
+
+  <div class="hint">
+    · 입력한 일정은 이 브라우저(기기)에만 자동 저장됩니다. 기기를 바꾸거나 초기화 전에는 <b>[백업 저장]</b>으로 JSON 파일을 받아두세요.<br>
+    · <b>[PNG 저장]</b>은 카톡 공유용 이미지, <b>[캘린더(.ics)]</b>는 휴대폰 캘린더로 일정을 옮길 때 사용합니다.<br>
+    · 달력의 날짜 칸 <b>＋</b> 또는 일정을 누르면 바로 추가·수정할 수 있습니다.
+  </div>
+</div>
+
+<div class="mask" id="mask" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3 id="m-title">일정 추가</h3>
+    <div class="frm">
+      <div class="f"><label>날짜</label><input type="date" id="m-date"></div>
+      <div class="f"><label>시간 (시작 ~ 종료)</label>
+        <div style="display:flex; gap:6px; align-items:center;">
+          <input type="time" id="m-time" step="600"><span style="color:#8a93a5">~</span><input type="time" id="m-end" step="600">
+        </div>
+      </div>
+      <div class="f"><label>구분</label><select id="m-type"></select></div>
+      <div class="f"><label>상태</label><select id="m-status"></select></div>
+      <div class="f"><label>업체 / 거래처</label><input id="m-client" placeholder="예: ○○산업"></div>
+      <div class="f"><label>현장명 / 주소</label><input id="m-site" placeholder="예: 사강공단 정문"></div>
+      <div class="f full"><label>작업 내용</label><input id="m-work" placeholder="예: 갈바 지주간판 설치, 채널문자 시공"></div>
+      <div class="f"><label>담당 / 인원</label><input id="m-staff" list="staffList" placeholder="예: 김영남"><datalist id="staffList"></datalist></div>
+      <div class="f"><label>차량 / 장비</label><input id="m-equip" placeholder="예: 스카이 1대, 1톤"></div>
+      <div class="f full"><label>메모</label><textarea id="m-memo" placeholder="현장 특이사항, 연락처, 준비물 등"></textarea></div>
+    </div>
+    <div class="mbtns">
+      <button class="del" id="m-del" onclick="delItem()">삭제</button>
+      <button class="cancel" onclick="closeModal()">취소</button>
+      <button class="ok" onclick="saveItem()">저장</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+/* ===================== 기본 설정 ===================== */
+var TYPES = [
+  {n:'실측', c:'#2b62b8'},
+  {n:'제작', c:'#6f42c1'},
+  {n:'시공', c:'#c0392b'},
+  {n:'납품', c:'#0b8457'},
+  {n:'상담', c:'#b7791f'},
+  {n:'A/S',  c:'#d1621f'},
+  {n:'기타', c:'#5a6b85'}
+];
+var STATUS = [
+  {n:'예정', c:'#1f3a68', bg:'#e9eef7'},
+  {n:'진행', c:'#0b8457', bg:'#e6f4ee'},
+  {n:'완료', c:'#7d879b', bg:'#f0f2f6'},
+  {n:'보류', c:'#c0392b', bg:'#fbeceb'}
+];
+var KEY = 'djs_schedule_v1';
+var WD = ['일','월','화','수','목','금','토'];
+
+var state = { view:'month', cur:new Date(), listRange:'month' };
+var items = [];
+var editId = null;
+
+/* ===================== 유틸 ===================== */
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+function pad(n){ return String(n).padStart(2,'0'); }
+function ymd(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function parseYmd(s){ var p=String(s||'').split('-'); return new Date(+p[0], (+p[1]||1)-1, +p[2]||1); }
+function todayStr(){ return ymd(new Date()); }
+function typeColor(t){ for(var i=0;i<TYPES.length;i++){ if(TYPES[i].n===t) return TYPES[i].c; } return '#5a6b85'; }
+function statusObj(s){ for(var i=0;i<STATUS.length;i++){ if(STATUS[i].n===s) return STATUS[i]; } return STATUS[0]; }
+function weekStart(d){ var x=new Date(d.getFullYear(),d.getMonth(),d.getDate()); x.setDate(x.getDate()-x.getDay()); return x; }
+function addDays(d,n){ var x=new Date(d.getFullYear(),d.getMonth(),d.getDate()); x.setDate(x.getDate()+n); return x; }
+function dLabel(s){ var d=parseYmd(s); return (d.getMonth()+1)+'/'+d.getDate()+'('+WD[d.getDay()]+')'; }
+function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(function(){ t.classList.remove('on'); },1900); }
+
+/* ===================== 저장 / 불러오기 ===================== */
+function load(){
+  try { items = JSON.parse(localStorage.getItem(KEY)||'[]') || []; } catch(e){ items = []; }
+  if(!Array.isArray(items)) items = [];
+}
+function save(){
+  try { localStorage.setItem(KEY, JSON.stringify(items)); }
+  catch(e){ alert('저장 공간이 부족합니다. 오래된 일정을 정리하거나 백업 후 사용해 주세요.'); }
+}
+function newId(){ return 'e'+Date.now().toString(36)+Math.floor(Math.random()*1000).toString(36); }
+
+/* ===================== 필터 ===================== */
+function fv(id){ var el=document.getElementById(id); return el?el.value.trim():''; }
+function filtered(){
+  var q=fv('f-q').toLowerCase(), t=fv('f-type'), s=fv('f-status'), st=fv('f-staff');
+  return items.filter(function(it){
+    if(t && it.type!==t) return false;
+    if(s && it.status!==s) return false;
+    if(st && (it.staff||'')!==st) return false;
+    if(q){
+      var hay=[it.client,it.site,it.work,it.memo,it.staff,it.equip,it.type].join(' ').toLowerCase();
+      if(hay.indexOf(q)<0) return false;
+    }
+    return true;
+  });
+}
+function resetFilter(){
+  ['f-q','f-type','f-status','f-staff'].forEach(function(id){ document.getElementById(id).value=''; });
+  render();
+}
+function byTime(a,b){ return (a.date+' '+(a.time||'99:99')).localeCompare(b.date+' '+(b.time||'99:99')); }
+function ofDay(list,ds){ return list.filter(function(it){ return it.date===ds; }).sort(byTime); }
+
+/* ===================== 화면 전환 ===================== */
+function setView(v){
+  state.view=v;
+  ['month','week','list'].forEach(function(k){
+    document.getElementById('tab-'+k).classList.toggle('on', k===v);
+    document.getElementById('view-'+k).style.display = (k===v?'':'none');
+  });
+  render();
+}
+function move(dir){
+  if(state.view==='week') state.cur=addDays(state.cur, dir*7);
+  else state.cur=new Date(state.cur.getFullYear(), state.cur.getMonth()+dir, 1);
+  render();
+}
+function goToday(){ state.cur=new Date(); render(); }
+
+/* ===================== 렌더 ===================== */
+function render(){
+  syncFilterOptions();
+  renderCards();
+  var list=filtered();
+  if(state.view==='month') renderMonth(list);
+  else if(state.view==='week') renderWeek(list);
+  else renderList(list);
+}
+
+function renderCards(){
+  var ts=todayStr(), ws=weekStart(new Date()), we=addDays(ws,6);
+  var wS=ymd(ws), wE=ymd(we);
+  var today=0, week=0, late=0;
+  items.forEach(function(it){
+    if(it.date===ts) today++;
+    if(it.date>=wS && it.date<=wE) week++;
+    if(it.date<ts && it.status!=='완료') late++;
+  });
+  document.getElementById('c-today').innerHTML=today+'<small>건</small>';
+  document.getElementById('c-week').innerHTML=week+'<small>건</small>';
+  document.getElementById('c-late').innerHTML=late+'<small>건</small>';
+  document.getElementById('c-all').innerHTML=items.length+'<small>건</small>';
+}
+
+function syncFilterOptions(){
+  fillSelect('f-type', TYPES.map(function(t){ return t.n; }), true);
+  fillSelect('f-status', STATUS.map(function(s){ return s.n; }), true);
+  var staffs=[]; items.forEach(function(it){ if(it.staff && staffs.indexOf(it.staff)<0) staffs.push(it.staff); });
+  staffs.sort();
+  fillSelect('f-staff', staffs, true);
+  var dl=document.getElementById('staffList');
+  dl.innerHTML = staffs.concat(staffs.indexOf('김영남')<0?['김영남']:[]).map(function(s){ return '<option value="'+esc(s)+'">'; }).join('');
+}
+function fillSelect(id, arr, keepAll){
+  var el=document.getElementById(id); if(!el) return;
+  var v=el.value;
+  el.innerHTML=(keepAll?'<option value="">전체</option>':'')+arr.map(function(s){ return '<option value="'+esc(s)+'">'+esc(s)+'</option>'; }).join('');
+  if(arr.indexOf(v)>=0 || v==='') el.value=v;
+}
+
+function chipHTML(it){
+  var c=typeColor(it.type);
+  var cls='chip'+(it.status==='완료'?' done':'')+(it.status==='보류'?' hold':'');
+  var label=[it.client, it.site].filter(Boolean).join(' · ') || it.work || '(내용 없음)';
+  var title=[it.time||'', it.type, it.client, it.site, it.work, it.staff?('담당 '+it.staff):''].filter(Boolean).join(' | ');
+  return '<span class="'+cls+'" style="border-left-color:'+c+'; background:'+c+'14; color:'+c+'" '+
+         'title="'+esc(title)+'" onclick="event.stopPropagation();openEdit(\''+it.id+'\')">'+
+         (it.time?'<span class="ctime">'+esc(it.time)+' </span>':'')+'<b>'+esc(it.type)+'</b> '+esc(label)+'</span>';
+}
+
+/* ---- 월간 ---- */
+function renderMonth(list){
+  var y=state.cur.getFullYear(), m=state.cur.getMonth();
+  document.getElementById('sheet-h').textContent=y+'년 '+(m+1)+'월 작업 일정표';
+  var first=new Date(y,m,1), start=weekStart(first), ts=todayStr();
+  var html='<table class="cal"><thead><tr>'+WD.map(function(w,i){ return '<th class="'+(i===0?'sun':i===6?'sat':'')+'">'+w+'</th>'; }).join('')+'</tr></thead><tbody>';
+  var d=start;
+  for(var wk=0; wk<6; wk++){
+    html+='<tr>';
+    for(var i=0;i<7;i++){
+      var ds=ymd(d), off=(d.getMonth()!==m);
+      var evs=ofDay(list, ds);
+      var show=evs.slice(0,3), rest=evs.length-show.length;
+      html+='<td class="'+(off?'off ':'')+(ds===ts?'today':'')+'" onclick="openNew(\''+ds+'\')">'+
+            '<div class="dnum '+(i===0?'sun':i===6?'sat':'')+'"><span>'+d.getDate()+'</span><span class="add" onclick="event.stopPropagation();openNew(\''+ds+'\')">＋</span></div>'+
+            show.map(chipHTML).join('')+
+            (rest>0?'<div class="more" onclick="event.stopPropagation();jumpDay(\''+ds+'\')">+'+rest+'건 더보기</div>':'')+
+            '</td>';
+      d=addDays(d,1);
+    }
+    html+='</tr>';
+    if(d.getMonth()!==m && wk>=3) break;
+  }
+  html+='</tbody></table>';
+  if(!list.length) html+='<div class="empty">등록된 일정이 없습니다.<br><button style="margin-top:10px;padding:9px 16px;border:1px solid #cfd6e0;background:#f6f8fb;color:#1f3a68;border-radius:6px;cursor:pointer;font-family:inherit;font-weight:700" onclick="seedSample()">샘플 일정 넣어보기</button></div>';
+  document.getElementById('view-month').innerHTML=html;
+}
+function jumpDay(ds){ state.cur=parseYmd(ds); setView('week'); }
+
+/* ---- 주간 ---- */
+function renderWeek(list){
+  var s=weekStart(state.cur), e=addDays(s,6), ts=todayStr();
+  document.getElementById('sheet-h').textContent=
+    (s.getMonth()+1)+'월 '+s.getDate()+'일 ~ '+(e.getMonth()+1)+'월 '+e.getDate()+'일 주간 일정';
+  var html='<div class="week">';
+  for(var i=0;i<7;i++){
+    var d=addDays(s,i), ds=ymd(d), evs=ofDay(list, ds);
+    html+='<div class="wday'+(ds===ts?' today':'')+'">'+
+          '<div class="wh"><span>'+(d.getMonth()+1)+'/'+d.getDate()+' ('+WD[d.getDay()]+')</span>'+
+          '<span class="add" onclick="openNew(\''+ds+'\')">＋</span></div>'+
+          '<div class="wb">'+(evs.length?evs.map(chipHTML).join(''):'<div style="color:#c3c9d4;font-size:12px;padding:4px 2px">-</div>')+'</div></div>';
+  }
+  html+='</div>';
+  document.getElementById('view-week').innerHTML=html;
+}
+
+/* ---- 목록 ---- */
+function renderList(list){
+  var y=state.cur.getFullYear(), m=state.cur.getMonth(), ts=todayStr();
+  var range=state.listRange, rows=list.slice();
+  if(range==='month'){
+    var pre=y+'-'+pad(m+1);
+    rows=rows.filter(function(it){ return String(it.date).slice(0,7)===pre; });
+    document.getElementById('sheet-h').textContent=y+'년 '+(m+1)+'월 일정 목록';
+  } else if(range==='future'){
+    rows=rows.filter(function(it){ return it.date>=ts; });
+    document.getElementById('sheet-h').textContent='오늘 이후 일정 목록';
+  } else {
+    document.getElementById('sheet-h').textContent='전체 일정 목록';
+  }
+  rows.sort(byTime);
+
+  var head='<div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;flex-wrap:wrap">'+
+    '<span style="font-size:12px;color:#7d879b;font-weight:600">표시 기간</span>'+
+    '<select onchange="state.listRange=this.value;render()" style="font-family:inherit;font-size:13px;padding:6px 8px;border:1px solid #cfd6e0;border-radius:5px">'+
+      ['month:해당 월','future:오늘 이후','all:전체'].map(function(o){
+        var p=o.split(':'); return '<option value="'+p[0]+'"'+(range===p[0]?' selected':'')+'>'+p[1]+'</option>';
+      }).join('')+
+    '</select><span style="font-size:12px;color:#7d879b">총 <b style="color:#1f3a68">'+rows.length+'</b>건</span></div>';
+
+  if(!rows.length){
+    document.getElementById('view-list').innerHTML=head+'<div class="empty">해당 조건의 일정이 없습니다.</div>';
+    return;
+  }
+  var html=head+'<table class="list"><thead><tr>'+
+    '<th style="width:92px">날짜</th><th style="width:78px">시간</th><th style="width:58px">구분</th>'+
+    '<th style="width:110px">업체</th><th style="width:120px">현장</th><th>작업 내용</th>'+
+    '<th style="width:74px">담당</th><th style="width:90px">차량/장비</th><th style="width:58px">상태</th></tr></thead><tbody>';
+  rows.forEach(function(it){
+    var c=typeColor(it.type), so=statusObj(it.status);
+    var tm=(it.time||'')+(it.end?('~'+it.end):'');
+    html+='<tr class="clickable'+(it.status==='완료'?' rowdone':'')+'" onclick="openEdit(\''+it.id+'\')">'+
+      '<td class="c" data-h="날짜">'+esc(dLabel(it.date))+'</td>'+
+      '<td class="c" data-h="시간">'+esc(tm||'-')+'</td>'+
+      '<td class="c" data-h="구분"><span class="badge" style="color:'+c+';background:'+c+'14;border-color:'+c+'40">'+esc(it.type)+'</span></td>'+
+      '<td data-h="업체">'+esc(it.client||'-')+'</td>'+
+      '<td data-h="현장">'+esc(it.site||'-')+'</td>'+
+      '<td data-h="작업 내용">'+esc(it.work||'-')+(it.memo?'<div style="font-size:11.5px;color:#8a93a5;margin-top:3px">※ '+esc(it.memo)+'</div>':'')+'</td>'+
+      '<td class="c" data-h="담당">'+esc(it.staff||'-')+'</td>'+
+      '<td class="c" data-h="차량/장비">'+esc(it.equip||'-')+'</td>'+
+      '<td class="c" data-h="상태"><span class="badge" style="color:'+so.c+';background:'+so.bg+';border-color:'+so.c+'33">'+esc(it.status)+'</span></td>'+
+    '</tr>';
+  });
+  html+='</tbody></table>';
+  document.getElementById('view-list').innerHTML=html;
+}
+
+/* ===================== 추가 / 수정 / 삭제 ===================== */
+function fillModalSelects(){
+  fillSelect('m-type', TYPES.map(function(t){ return t.n; }), false);
+  fillSelect('m-status', STATUS.map(function(s){ return s.n; }), false);
+}
+function defaultDate(){
+  var t=new Date();
+  if(state.view!=='list' && (state.cur.getFullYear()!==t.getFullYear() || state.cur.getMonth()!==t.getMonth())){
+    return state.view==='week' ? ymd(weekStart(state.cur)) : ymd(new Date(state.cur.getFullYear(), state.cur.getMonth(), 1));
+  }
+  return todayStr();
+}
+function openNew(ds){
+  editId=null;
+  fillModalSelects();
+  document.getElementById('m-title').textContent='일정 추가';
+  document.getElementById('m-del').style.display='none';
+  document.getElementById('m-date').value = ds || defaultDate();
+  document.getElementById('m-time').value='09:00';
+  document.getElementById('m-end').value='';
+  document.getElementById('m-type').value='시공';
+  document.getElementById('m-status').value='예정';
+  ['m-client','m-site','m-work','m-staff','m-equip','m-memo'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('mask').classList.add('on');
+  setTimeout(function(){ document.getElementById('m-client').focus(); },50);
+}
+function openEdit(id){
+  var it=items.filter(function(x){ return x.id===id; })[0]; if(!it) return;
+  editId=id;
+  fillModalSelects();
+  document.getElementById('m-title').textContent='일정 수정';
+  document.getElementById('m-del').style.display='';
+  document.getElementById('m-date').value=it.date||'';
+  document.getElementById('m-time').value=it.time||'';
+  document.getElementById('m-end').value=it.end||'';
+  document.getElementById('m-type').value=it.type||'기타';
+  document.getElementById('m-status').value=it.status||'예정';
+  document.getElementById('m-client').value=it.client||'';
+  document.getElementById('m-site').value=it.site||'';
+  document.getElementById('m-work').value=it.work||'';
+  document.getElementById('m-staff').value=it.staff||'';
+  document.getElementById('m-equip').value=it.equip||'';
+  document.getElementById('m-memo').value=it.memo||'';
+  document.getElementById('mask').classList.add('on');
+}
+function closeModal(){ document.getElementById('mask').classList.remove('on'); editId=null; }
+function saveItem(){
+  var date=document.getElementById('m-date').value;
+  if(!date){ alert('날짜를 입력해 주세요.'); return; }
+  var o={
+    id: editId || newId(),
+    date: date,
+    time: document.getElementById('m-time').value,
+    end: document.getElementById('m-end').value,
+    type: document.getElementById('m-type').value,
+    status: document.getElementById('m-status').value,
+    client: document.getElementById('m-client').value.trim(),
+    site: document.getElementById('m-site').value.trim(),
+    work: document.getElementById('m-work').value.trim(),
+    staff: document.getElementById('m-staff').value.trim(),
+    equip: document.getElementById('m-equip').value.trim(),
+    memo: document.getElementById('m-memo').value.trim()
+  };
+  if(editId){
+    items = items.map(function(x){ return x.id===editId? o : x; });
+  } else {
+    items.push(o);
+  }
+  save(); closeModal(); render(); toast(editId?'일정을 수정했습니다.':'일정을 등록했습니다.');
+}
+function delItem(){
+  if(!editId) return;
+  if(!confirm('이 일정을 삭제할까요?')) return;
+  items = items.filter(function(x){ return x.id!==editId; });
+  save(); closeModal(); render(); toast('일정을 삭제했습니다.');
+}
+
+/* ===================== 현재 화면 기간 ===================== */
+function periodRange(){
+  if(state.view==='week'){ var s=weekStart(state.cur); return {s:ymd(s), e:ymd(addDays(s,6)), t:'주간'}; }
+  if(state.view==='list'){
+    if(state.listRange==='future') return {s:todayStr(), e:'9999-12-31', t:'오늘 이후'};
+    if(state.listRange==='all') return {s:'0000-01-01', e:'9999-12-31', t:'전체'};
+  }
+  var y=state.cur.getFullYear(), m=state.cur.getMonth();
+  return {s:ymd(new Date(y,m,1)), e:ymd(new Date(y,m+1,0)), t:y+'년 '+(m+1)+'월'};
+}
+function currentRows(){
+  var r=periodRange();
+  return filtered().filter(function(it){ return it.date>=r.s && it.date<=r.e; }).sort(byTime);
+}
+
+/* ===================== 내보내기 ===================== */
+function savePNG(){
+  if(typeof html2canvas==='undefined'){ alert('PNG 모듈을 불러오지 못했습니다.\n[인쇄 / PDF]를 이용해 주세요.'); return; }
+  var el=document.getElementById('sheet');
+  document.body.classList.add('capturing');
+  html2canvas(el,{scale:2, backgroundColor:'#ffffff', windowWidth:Math.max(1000, el.offsetWidth), useCORS:true}).then(function(c){
+    document.body.classList.remove('capturing');
+    var a=document.createElement('a'); a.href=c.toDataURL('image/png');
+    a.download=fileBase()+'.png'; a.click(); toast('PNG 이미지를 저장했습니다.');
+  }).catch(function(){ document.body.classList.remove('capturing'); alert('이미지 저장에 실패했습니다. [인쇄 / PDF]를 이용해 주세요.'); });
+}
+function fileBase(){
+  var d=new Date();
+  return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'_디자인재성_일정표';
+}
+function copyKakao(){
+  var rows=currentRows(), r=periodRange();
+  if(!rows.length){ alert('해당 기간에 일정이 없습니다.'); return; }
+  var txt='[디자인재성 작업일정] '+r.t+'\n';
+  var last='';
+  rows.forEach(function(it){
+    if(it.date!==last){ txt+='\n■ '+dLabel(it.date)+'\n'; last=it.date; }
+    var line=' · '+(it.time?it.time+' ':'')+it.type;
+    var who=[it.client,it.site].filter(Boolean).join(' / ');
+    if(who) line+=' | '+who;
+    if(it.work) line+=' - '+it.work;
+    var tail=[];
+    if(it.staff) tail.push('담당 '+it.staff);
+    if(it.equip) tail.push(it.equip);
+    if(it.status && it.status!=='예정') tail.push(it.status);
+    if(tail.length) line+=' ('+tail.join(', ')+')';
+    txt+=line+'\n';
+  });
+  txt+='\n문의 010-9451-9804 디자인재성';
+  copyText(txt);
+}
+function copyText(txt){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){ toast('카톡 공유 문구를 복사했습니다.'); }, function(){ fallbackCopy(txt); });
+  } else fallbackCopy(txt);
+}
+function fallbackCopy(txt){
+  var ta=document.createElement('textarea');
+  ta.value=txt; ta.style.position='fixed'; ta.style.left='-9999px';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); toast('카톡 공유 문구를 복사했습니다.'); }
+  catch(e){ prompt('아래 내용을 복사하세요.', txt); }
+  document.body.removeChild(ta);
+}
+function icsTime(date,time,addMin){
+  var d=parseYmd(date), hm=(time||'09:00').split(':');
+  d.setHours(+hm[0]||0, +hm[1]||0, 0, 0);
+  if(addMin) d.setMinutes(d.getMinutes()+addMin);
+  return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(d.getHours())+pad(d.getMinutes())+'00';
+}
+function icsEsc(s){ return String(s||'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n'); }
+function exportICS(){
+  var rows=currentRows();
+  if(!rows.length){ alert('해당 기간에 일정이 없습니다.'); return; }
+  var L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//DesignJaeseong//Schedule//KO','CALSCALE:GREGORIAN'];
+  rows.forEach(function(it){
+    var sum='['+it.type+'] '+([it.client,it.site].filter(Boolean).join(' ')||it.work||'일정');
+    var desc=[it.work?('작업: '+it.work):'', it.staff?('담당: '+it.staff):'', it.equip?('차량/장비: '+it.equip):'', it.memo?('메모: '+it.memo):'', '상태: '+it.status].filter(Boolean).join('\n');
+    L.push('BEGIN:VEVENT');
+    L.push('UID:'+it.id+'@designjaeseong');
+    L.push('DTSTART:'+icsTime(it.date, it.time));
+    L.push('DTEND:'+(it.end? icsTime(it.date, it.end) : icsTime(it.date, it.time, 60)));
+    L.push('SUMMARY:'+icsEsc(sum));
+    if(desc) L.push('DESCRIPTION:'+icsEsc(desc));
+    if(it.site) L.push('LOCATION:'+icsEsc(it.site));
+    L.push('END:VEVENT');
+  });
+  L.push('END:VCALENDAR');
+  downloadBlob(L.join('\r\n'), fileBase()+'.ics', 'text/calendar;charset=utf-8');
+  toast('캘린더 파일(.ics)을 저장했습니다.');
+}
+function exportJSON(){
+  downloadBlob(JSON.stringify({app:'디자인재성 일정표', ver:1, saved:new Date().toISOString(), items:items}, null, 2),
+               fileBase()+'_백업.json', 'application/json;charset=utf-8');
+  toast('백업 파일을 저장했습니다.');
+}
+function downloadBlob(text, name, mime){
+  var blob=new Blob(['\ufeff'+text], {type:mime});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 3000);
+}
+function importJSON(input){
+  var f=input.files && input.files[0]; if(!f) return;
+  var rd=new FileReader();
+  rd.onload=function(){
+    try {
+      var raw=String(rd.result).replace(/^\ufeff/,'');
+      var data=JSON.parse(raw);
+      var arr=Array.isArray(data)? data : (data.items||[]);
+      if(!Array.isArray(arr) || !arr.length){ alert('불러올 일정이 없습니다.'); return; }
+      var mode=confirm('기존 일정에 '+arr.length+'건을 추가할까요?\n[취소]를 누르면 기존 일정을 모두 지우고 백업 내용으로 교체합니다.');
+      if(!mode) items=[];
+      var have={}; items.forEach(function(x){ have[x.id]=1; });
+      arr.forEach(function(x){
+        if(!x || !x.date) return;
+        if(!x.id || have[x.id]) x.id=newId();
+        have[x.id]=1;
+        items.push({id:x.id, date:x.date, time:x.time||'', end:x.end||'', type:x.type||'기타', status:x.status||'예정',
+                    client:x.client||'', site:x.site||'', work:x.work||'', staff:x.staff||'', equip:x.equip||'', memo:x.memo||''});
+      });
+      save(); render(); toast('백업을 불러왔습니다. (총 '+items.length+'건)');
+    } catch(e){ alert('백업 파일을 읽을 수 없습니다.'); }
+    input.value='';
+  };
+  rd.readAsText(f);
+}
+
+/* ===================== 샘플 ===================== */
+function seedSample(){
+  var t=new Date();
+  function rel(n){ return ymd(addDays(t,n)); }
+  items = items.concat([
+    {id:newId(), date:rel(0),  time:'09:00', end:'11:00', type:'실측', status:'예정', client:'○○산업', site:'사강공단 정문', work:'지주간판 설치 위치 실측', staff:'김영남', equip:'1톤', memo:'담당자 010-0000-0000'},
+    {id:newId(), date:rel(1),  time:'13:00', end:'18:00', type:'제작', status:'진행', client:'○○산업', site:'공장', work:'갈바 지주간판 본체 제작 · 우레탄 도장', staff:'윤승노', equip:'', memo:''},
+    {id:newId(), date:rel(3),  time:'08:00', end:'15:00', type:'시공', status:'예정', client:'△△빌딩', site:'안산 고잔동', work:'채널문자 4자 설치 + 배선', staff:'김영남', equip:'스카이 1대', memo:'주차 협의 필요'},
+    {id:newId(), date:rel(5),  time:'10:00', end:'', type:'상담', status:'예정', client:'□□카페', site:'화성 송산', work:'파사드 갈바 마감 상담 · 견적 협의', staff:'김영남', equip:'', memo:''},
+    {id:newId(), date:rel(-2), time:'09:00', end:'12:00', type:'납품', status:'완료', client:'◇◇물류', site:'평택 창고', work:'금속 파티션 6조 납품', staff:'윤승노', equip:'1톤', memo:''}
+  ]);
+  save(); render(); toast('샘플 일정 5건을 넣었습니다.');
+}
+
+/* ===================== 초기화 ===================== */
+document.addEventListener('keydown', function(e){
+  if(e.key==='Escape') closeModal();
+  if(document.getElementById('mask').classList.contains('on') && (e.key==='Enter') && (e.ctrlKey||e.metaKey)) saveItem();
+});
+load();
+fillModalSelects();
+setView('month');
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</body>
+</html>
