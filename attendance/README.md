@@ -3,6 +3,9 @@
 직원은 휴대폰으로 출퇴근을 기록하고, 관리자는 PC·휴대폰에서 근무시간·일당·연장근무·
 현장근무·지급금액까지 한 곳에서 관리하는 반응형 웹 시스템입니다.
 
+> 📖 **처음 설치하신다면 [실행방법.md](./실행방법.md) 를 먼저 보세요.**
+> 인터넷 배포·내 PC 테스트·회사 서버 설치 방법을 화면 그대로 따라 할 수 있게 정리해 두었습니다.
+
 ---
 
 ## 1. 빠른 시작
@@ -30,10 +33,9 @@ cp .env.example .env      # 값을 실제 환경에 맞게 수정
 ### 실행
 
 ```bash
-npx prisma migrate deploy   # DB 테이블 생성
-npm run seed                # 최초 관리자 계정 + 기본 설정 생성
+npm run setup    # DB 테이블 생성 + 최초 관리자 계정·기본 설정 (여러 번 실행해도 안전)
 npm run build
-npm start                   # http://localhost:3000
+npm start        # http://localhost:3000
 ```
 
 개발 중에는 `npm run dev` 를 사용합니다.

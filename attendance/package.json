@@ -7,6 +7,8 @@
     "dev": "next dev -p 3000",
     "build": "prisma generate && next build",
     "start": "next start -p 3000",
+    "setup": "prisma migrate deploy && tsx prisma/seed.ts",
+    "deploy:build": "prisma generate && prisma migrate deploy && tsx prisma/seed.ts && next build",
     "lint": "next lint",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
