@@ -157,6 +157,63 @@
   body.capturing .cal .dnum .add, body.capturing .wday .wh .add,
   body.capturing .sheet-title .nav { display:none !important; }
   body.capturing .company.print-only { display:flex !important; }
+
+  /* ---------- 연락처 / 카톡 연동 ---------- */
+  .cbar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:14px; }
+  .cbar button { font-family:inherit; font-size:13px; font-weight:700; padding:9px 14px; border-radius:6px; cursor:pointer; border:1px solid #cfd6e0; background:#f6f8fb; color:#1f3a68; }
+  .cbar button.pri { background:#1f3a68; color:#fff; border-color:#1f3a68; }
+  .cbar .sp { flex:1; }
+  .sec-t { font-size:14px; font-weight:800; color:#1f3a68; border-left:4px solid #1f3a68; padding-left:8px; margin:18px 0 8px; }
+  .sec-t small { font-weight:600; color:#8a93a5; font-size:11.5px; margin-left:6px; }
+  table.clist { width:100%; border-collapse:collapse; font-size:13px; }
+  table.clist th { background:#f1f4f9; color:#44506b; font-size:12px; font-weight:700; padding:8px 6px; border:1px solid #dfe4ec; }
+  table.clist td { border:1px solid #dfe4ec; padding:8px 7px; vertical-align:middle; }
+  table.clist td.c { text-align:center; }
+  table.clist tr:nth-child(even) td { background:#fafbfd; }
+  .cname { font-weight:700; color:#22314f; }
+  .ccomp { font-size:11.5px; color:#8a93a5; }
+  .tel { color:#1f3a68; text-decoration:none; font-weight:700; }
+  .ib { display:inline-flex; align-items:center; justify-content:center; width:30px; height:28px; border:1px solid #cfd6e0; background:#fff; border-radius:5px; cursor:pointer; font-size:13px; margin:0 2px; color:#1f3a68; text-decoration:none; }
+  .ib:hover { background:#eef2f8; }
+  .ib.kk { border-color:#e6c200; background:#fff8d6; color:#7a6000; }
+  .ib.dl { border-color:#e6b5ae; color:#c0392b; }
+  .recent { display:flex; flex-wrap:wrap; gap:8px; }
+  .rcard { border:1px solid #dfe4ec; border-radius:8px; padding:8px 11px; font-size:12.5px; background:#fff; min-width:172px; }
+  .rcard .rt { font-size:11px; color:#8a93a5; }
+  .rcard .rn { font-weight:700; color:#22314f; margin:2px 0; }
+  .rcard .rk { display:inline-block; font-size:10.5px; font-weight:700; padding:1px 6px; border-radius:9px; background:#eef2f8; color:#1f3a68; }
+  .pickbtn { float:right; font-size:11.5px; font-weight:700; color:#1f3a68; background:#eef2f8; border:1px solid #cfd6e0; border-radius:4px; padding:1px 7px; cursor:pointer; }
+  .pickbtn:hover { background:#dde5f2; }
+  .picklist { max-height:280px; overflow:auto; border:1px solid #dfe4ec; border-radius:6px; margin-top:8px; }
+  .pickrow { padding:9px 11px; border-bottom:1px solid #eef1f5; cursor:pointer; display:flex; justify-content:space-between; gap:8px; font-size:13.5px; }
+  .pickrow:hover { background:#fff8e6; }
+  .pickrow:last-child { border-bottom:none; }
+  .pickrow .p2 { color:#8a93a5; font-size:12.5px; }
+  .kmemo { font-size:12px; color:#5a6b85; line-height:1.7; background:#f6f8fb; border:1px solid #dfe4ec; border-radius:6px; padding:10px 12px; margin-bottom:10px; }
+  .kmemo b { color:#1f3a68; }
+  #k-text { width:100%; min-height:150px; font-family:inherit; font-size:13px; padding:9px; border:1px solid #cfd6e0; border-radius:6px; resize:vertical; }
+  table.krev { width:100%; border-collapse:collapse; font-size:12.5px; margin-top:10px; }
+  table.krev th { background:#1f3a68; color:#fff; padding:7px 5px; font-size:11.5px; border:1px solid #1f3a68; }
+  table.krev td { border:1px solid #dfe4ec; padding:5px; vertical-align:middle; }
+  table.krev input, table.krev select { font-family:inherit; font-size:12.5px; padding:4px 5px; border:1px solid #cfd6e0; border-radius:4px; width:100%; }
+  table.krev .raw { font-size:11px; color:#8a93a5; margin-top:3px; line-height:1.5; }
+  .modal.wide { max-width:940px; }
+  @media (max-width:760px) {
+    .cbar button { flex:1 1 44%; }
+    table.clist thead { display:none; }
+    table.clist, table.clist tbody, table.clist tr, table.clist td { display:block; width:100%; }
+    table.clist tr { border:1px solid #dfe4ec; border-radius:8px; margin:8px 0; padding:6px 12px; }
+    table.clist td { border:none; border-bottom:1px dashed #eef1f5; padding:7px 0; display:flex; justify-content:space-between; gap:10px; text-align:right; background:transparent !important; }
+    table.clist td:last-child { border-bottom:none; }
+    table.clist td::before { content:attr(data-h); color:#8a93a5; font-weight:600; font-size:12px; text-align:left; }
+    .rcard { flex:1 1 100%; }
+    table.krev thead { display:none; }
+    table.krev, table.krev tbody, table.krev tr, table.krev td { display:block; width:100%; }
+    table.krev tr { border:1px solid #dfe4ec; border-radius:8px; margin:8px 0; padding:6px 10px; }
+    table.krev td { border:none; padding:4px 0; }
+  }
+  @media print { .cbar, .ib, .pickbtn { display:none !important; } }
+  body.capturing .cbar, body.capturing .ib { display:none !important; }
 </style>
 </head>
 <body>
@@ -176,11 +233,14 @@
       <button id="tab-month" class="on" onclick="setView('month')">월간</button>
       <button id="tab-week" onclick="setView('week')">주간</button>
       <button id="tab-list" onclick="setView('list')">목록</button>
+      <button id="tab-contacts" onclick="setView('contacts')">연락처</button>
     </div>
     <div class="sp"></div>
     <button class="alt" onclick="window.print()">인쇄 / PDF</button>
     <button class="alt" onclick="savePNG()">PNG 저장</button>
-    <button class="ghost" onclick="copyKakao()">카톡 문구 복사</button>
+    <button class="alt" onclick="shareKakao()">카톡으로 보내기</button>
+    <button class="ghost" onclick="openKakaoImport()">카톡 대화 → 일정</button>
+    <button class="ghost" onclick="copyKakao()">문구 복사</button>
     <button class="ghost" onclick="exportICS()">캘린더(.ics)</button>
     <button class="ghost" onclick="exportJSON()">백업 저장</button>
     <button class="ghost" onclick="document.getElementById('impfile').click()">백업 불러오기</button>
@@ -218,6 +278,7 @@
     <div id="view-month"></div>
     <div id="view-week" style="display:none"></div>
     <div id="view-list" style="display:none"></div>
+    <div id="view-contacts" style="display:none"></div>
 
     <div class="company print-only">
       <div class="c-name">디자인재성</div>
@@ -231,7 +292,10 @@
   <div class="hint">
     · 입력한 일정은 이 브라우저(기기)에만 자동 저장됩니다. 기기를 바꾸거나 초기화 전에는 <b>[백업 저장]</b>으로 JSON 파일을 받아두세요.<br>
     · <b>[PNG 저장]</b>은 카톡 공유용 이미지, <b>[캘린더(.ics)]</b>는 휴대폰 캘린더로 일정을 옮길 때 사용합니다.<br>
-    · 달력의 날짜 칸 <b>＋</b> 또는 일정을 누르면 바로 추가·수정할 수 있습니다.
+    · 달력의 날짜 칸 <b>＋</b> 또는 일정을 누르면 바로 추가·수정할 수 있습니다.<br>
+    · <b>[카톡 대화 → 일정]</b>: 카톡 대화를 붙여넣거나 [대화 내보내기] .txt를 올리면 "20일 오전 9시 실측" 같은 문장을 찾아 일정 초안을 만듭니다.<br>
+    · <b>[카톡으로 보내기]</b>는 휴대폰에서 공유창(카톡 선택)을 띄우고, PC에서는 문구를 복사합니다. 목록의 📞·💬·💛로 전화·문자·카톡을 바로 보낼 수 있습니다.<br>
+    · <b>휴대폰 연락처 불러오기</b>는 안드로이드 크롬 + https 주소에서 동작하며, 아이폰·PC는 연락처 <b>.vcf 파일</b>로 가져오면 됩니다. (휴대폰 통화기록은 웹에서 읽을 수 없어, 이 앱에서 발신한 내역을 <b>최근 연락 기록</b>으로 남깁니다.)
   </div>
 </div>
 
@@ -252,6 +316,12 @@
       <div class="f full"><label>작업 내용</label><input id="m-work" placeholder="예: 갈바 지주간판 설치, 채널문자 시공"></div>
       <div class="f"><label>담당 / 인원</label><input id="m-staff" list="staffList" placeholder="예: 김영남"><datalist id="staffList"></datalist></div>
       <div class="f"><label>차량 / 장비</label><input id="m-equip" placeholder="예: 스카이 1대, 1톤"></div>
+      <div class="f full"><label>현장 담당자 / 연락처 <span class="pickbtn" onclick="pickContact()">＋ 연락처에서 선택</span></label>
+        <div style="display:flex; gap:6px;">
+          <input id="m-contact" placeholder="담당자명" style="flex:1">
+          <input id="m-phone" type="tel" inputmode="tel" placeholder="010-0000-0000" style="flex:1.3">
+        </div>
+      </div>
       <div class="f full"><label>메모</label><textarea id="m-memo" placeholder="현장 특이사항, 연락처, 준비물 등"></textarea></div>
     </div>
     <div class="mbtns">
@@ -261,6 +331,60 @@
     </div>
   </div>
 </div>
+
+<!-- 연락처 선택 -->
+<div class="mask" id="pmask" onclick="if(event.target===this)closePick()">
+  <div class="modal">
+    <h3>연락처 선택</h3>
+    <input id="p-q" placeholder="이름·업체·번호 검색" oninput="renderPickList()"
+           style="width:100%;font-family:inherit;font-size:14px;padding:9px;border:1px solid #cfd6e0;border-radius:5px">
+    <div class="picklist" id="p-list"></div>
+    <div class="mbtns">
+      <button class="cancel" onclick="importFromPhone(true)">📱 휴대폰 연락처</button>
+      <button class="ok" onclick="closePick()">닫기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 연락처 추가/수정 -->
+<div class="mask" id="cmask" onclick="if(event.target===this)closeContact()">
+  <div class="modal">
+    <h3 id="c-title">연락처 추가</h3>
+    <div class="frm">
+      <div class="f"><label>이름</label><input id="c-name" placeholder="예: 홍길동 과장"></div>
+      <div class="f"><label>업체</label><input id="c-comp" placeholder="예: ○○산업"></div>
+      <div class="f full"><label>전화번호</label><input id="c-phone" type="tel" inputmode="tel" placeholder="010-0000-0000"></div>
+      <div class="f full"><label>메모</label><input id="c-memo" placeholder="현장 위치, 담당 품목 등"></div>
+    </div>
+    <div class="mbtns">
+      <button class="del" id="c-del" onclick="delContact()">삭제</button>
+      <button class="cancel" onclick="closeContact()">취소</button>
+      <button class="ok" onclick="saveContact()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 카톡 대화 → 일정 -->
+<div class="mask" id="kmask" onclick="if(event.target===this)closeKakaoImport()">
+  <div class="modal wide">
+    <h3>카톡 대화에서 일정 만들기</h3>
+    <div class="kmemo">
+      카카오톡 대화 내용을 <b>복사해서 아래에 붙여넣기</b> 하거나, 카톡 <b>[대화 내보내기]</b>로 저장한 <b>.txt 파일</b>을 불러오세요.<br>
+      날짜·시간·작업 구분을 자동으로 찾아 일정 초안을 만들어 드립니다. (예: "20일 오전 9시 실측 가능할까요?")
+    </div>
+    <textarea id="k-text" placeholder="여기에 카톡 대화를 붙여넣기 하세요"></textarea>
+    <div class="cbar" style="margin-top:10px">
+      <button onclick="document.getElementById('kfile').click()">대화 .txt 파일 불러오기</button>
+      <button class="pri" onclick="runKakaoParse()">일정 찾기</button>
+      <div class="sp"></div>
+      <button onclick="closeKakaoImport()">닫기</button>
+    </div>
+    <div id="k-result"></div>
+  </div>
+</div>
+
+<input type="file" id="kfile" accept=".txt,text/plain" style="display:none" onchange="loadKakaoFile(this)">
+<input type="file" id="vcffile" accept=".vcf,text/vcard,text/x-vcard" style="display:none" onchange="importVCF(this)">
 
 <div class="toast" id="toast"></div>
 <script>
@@ -320,7 +444,7 @@ function filtered(){
     if(s && it.status!==s) return false;
     if(st && (it.staff||'')!==st) return false;
     if(q){
-      var hay=[it.client,it.site,it.work,it.memo,it.staff,it.equip,it.type].join(' ').toLowerCase();
+      var hay=[it.client,it.site,it.work,it.memo,it.staff,it.equip,it.type,it.contact,it.phone].join(' ').toLowerCase();
       if(hay.indexOf(q)<0) return false;
     }
     return true;
@@ -336,10 +460,14 @@ function ofDay(list,ds){ return list.filter(function(it){ return it.date===ds; }
 /* ===================== 화면 전환 ===================== */
 function setView(v){
   state.view=v;
-  ['month','week','list'].forEach(function(k){
+  ['month','week','list','contacts'].forEach(function(k){
     document.getElementById('tab-'+k).classList.toggle('on', k===v);
     document.getElementById('view-'+k).style.display = (k===v?'':'none');
   });
+  var isC = (v==='contacts');
+  document.querySelector('.sheet-title .nav').style.display = isC? 'none':'';
+  document.querySelector('.filters').style.display = isC? 'none':'';
+  document.querySelector('.cards').style.display = isC? 'none':'';
   render();
 }
 function move(dir){
@@ -354,7 +482,8 @@ function render(){
   syncFilterOptions();
   renderCards();
   var list=filtered();
-  if(state.view==='month') renderMonth(list);
+  if(state.view==='contacts') renderContacts();
+  else if(state.view==='month') renderMonth(list);
   else if(state.view==='week') renderWeek(list);
   else renderList(list);
 }
@@ -477,7 +606,7 @@ function renderList(list){
   var html=head+'<table class="list"><thead><tr>'+
     '<th style="width:92px">날짜</th><th style="width:78px">시간</th><th style="width:58px">구분</th>'+
     '<th style="width:110px">업체</th><th style="width:120px">현장</th><th>작업 내용</th>'+
-    '<th style="width:74px">담당</th><th style="width:90px">차량/장비</th><th style="width:58px">상태</th></tr></thead><tbody>';
+    '<th style="width:74px">담당</th><th style="width:90px">차량/장비</th><th style="width:58px">상태</th><th style="width:96px">연락</th></tr></thead><tbody>';
   rows.forEach(function(it){
     var c=typeColor(it.type), so=statusObj(it.status);
     var tm=(it.time||'')+(it.end?('~'+it.end):'');
@@ -485,12 +614,16 @@ function renderList(list){
       '<td class="c" data-h="날짜">'+esc(dLabel(it.date))+'</td>'+
       '<td class="c" data-h="시간">'+esc(tm||'-')+'</td>'+
       '<td class="c" data-h="구분"><span class="badge" style="color:'+c+';background:'+c+'14;border-color:'+c+'40">'+esc(it.type)+'</span></td>'+
-      '<td data-h="업체">'+esc(it.client||'-')+'</td>'+
+      '<td data-h="업체">'+esc(it.client||'-')+
+        (it.contact||it.phone ? '<div style="font-size:11.5px;color:#8a93a5;margin-top:2px">'+esc(it.contact||'')+
+          (it.phone? ' <a class="tel" href="tel:'+esc(it.phone)+'" onclick="event.stopPropagation();logRecent(\''+esc(it.contact||it.client)+'\',\''+esc(it.phone)+'\',\'전화\')">'+esc(it.phone)+'</a>':'')+'</div>' : '')+
+      '</td>'+
       '<td data-h="현장">'+esc(it.site||'-')+'</td>'+
       '<td data-h="작업 내용">'+esc(it.work||'-')+(it.memo?'<div style="font-size:11.5px;color:#8a93a5;margin-top:3px">※ '+esc(it.memo)+'</div>':'')+'</td>'+
       '<td class="c" data-h="담당">'+esc(it.staff||'-')+'</td>'+
       '<td class="c" data-h="차량/장비">'+esc(it.equip||'-')+'</td>'+
       '<td class="c" data-h="상태"><span class="badge" style="color:'+so.c+';background:'+so.bg+';border-color:'+so.c+'33">'+esc(it.status)+'</span></td>'+
+      '<td class="c" data-h="연락" onclick="event.stopPropagation()">'+contactBtns(it)+'</td>'+
     '</tr>';
   });
   html+='</tbody></table>';
@@ -519,7 +652,7 @@ function openNew(ds){
   document.getElementById('m-end').value='';
   document.getElementById('m-type').value='시공';
   document.getElementById('m-status').value='예정';
-  ['m-client','m-site','m-work','m-staff','m-equip','m-memo'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['m-client','m-site','m-work','m-staff','m-equip','m-memo','m-contact','m-phone'].forEach(function(id){ document.getElementById(id).value=''; });
   document.getElementById('mask').classList.add('on');
   setTimeout(function(){ document.getElementById('m-client').focus(); },50);
 }
@@ -540,6 +673,8 @@ function openEdit(id){
   document.getElementById('m-staff').value=it.staff||'';
   document.getElementById('m-equip').value=it.equip||'';
   document.getElementById('m-memo').value=it.memo||'';
+  document.getElementById('m-contact').value=it.contact||'';
+  document.getElementById('m-phone').value=it.phone||'';
   document.getElementById('mask').classList.add('on');
 }
 function closeModal(){ document.getElementById('mask').classList.remove('on'); editId=null; }
@@ -558,13 +693,16 @@ function saveItem(){
     work: document.getElementById('m-work').value.trim(),
     staff: document.getElementById('m-staff').value.trim(),
     equip: document.getElementById('m-equip').value.trim(),
-    memo: document.getElementById('m-memo').value.trim()
+    memo: document.getElementById('m-memo').value.trim(),
+    contact: document.getElementById('m-contact').value.trim(),
+    phone: normPhone(document.getElementById('m-phone').value)
   };
   if(editId){
     items = items.map(function(x){ return x.id===editId? o : x; });
   } else {
     items.push(o);
   }
+  if(o.phone) rememberContact(o.contact||o.client, o.client, o.phone);
   save(); closeModal(); render(); toast(editId?'일정을 수정했습니다.':'일정을 등록했습니다.');
 }
 function delItem(){
@@ -666,7 +804,7 @@ function exportICS(){
   toast('캘린더 파일(.ics)을 저장했습니다.');
 }
 function exportJSON(){
-  downloadBlob(JSON.stringify({app:'디자인재성 일정표', ver:1, saved:new Date().toISOString(), items:items}, null, 2),
+  downloadBlob(JSON.stringify({app:'디자인재성 일정표', ver:2, saved:new Date().toISOString(), items:items, contacts:contacts, recents:recents}, null, 2),
                fileBase()+'_백업.json', 'application/json;charset=utf-8');
   toast('백업 파일을 저장했습니다.');
 }
@@ -693,8 +831,11 @@ function importJSON(input){
         if(!x.id || have[x.id]) x.id=newId();
         have[x.id]=1;
         items.push({id:x.id, date:x.date, time:x.time||'', end:x.end||'', type:x.type||'기타', status:x.status||'예정',
-                    client:x.client||'', site:x.site||'', work:x.work||'', staff:x.staff||'', equip:x.equip||'', memo:x.memo||''});
+                    client:x.client||'', site:x.site||'', work:x.work||'', staff:x.staff||'', equip:x.equip||'', memo:x.memo||'',
+                    contact:x.contact||'', phone:x.phone||''});
       });
+      if(Array.isArray(data.contacts)) data.contacts.forEach(function(c){ if(c && (c.phone||c.name)) rememberContact(c.name, c.company, c.phone, c.memo); });
+      if(Array.isArray(data.recents)) { recents = data.recents.concat(recents).slice(0,60); saveRecents(); }
       save(); render(); toast('백업을 불러왔습니다. (총 '+items.length+'건)');
     } catch(e){ alert('백업 파일을 읽을 수 없습니다.'); }
     input.value='';
@@ -707,13 +848,470 @@ function seedSample(){
   var t=new Date();
   function rel(n){ return ymd(addDays(t,n)); }
   items = items.concat([
-    {id:newId(), date:rel(0),  time:'09:00', end:'11:00', type:'실측', status:'예정', client:'○○산업', site:'사강공단 정문', work:'지주간판 설치 위치 실측', staff:'김영남', equip:'1톤', memo:'담당자 010-0000-0000'},
+    {id:newId(), date:rel(0),  time:'09:00', end:'11:00', type:'실측', status:'예정', client:'○○산업', site:'사강공단 정문', work:'지주간판 설치 위치 실측', staff:'김영남', equip:'1톤', memo:'', contact:'박부장', phone:'010-1234-5678'},
     {id:newId(), date:rel(1),  time:'13:00', end:'18:00', type:'제작', status:'진행', client:'○○산업', site:'공장', work:'갈바 지주간판 본체 제작 · 우레탄 도장', staff:'윤승노', equip:'', memo:''},
-    {id:newId(), date:rel(3),  time:'08:00', end:'15:00', type:'시공', status:'예정', client:'△△빌딩', site:'안산 고잔동', work:'채널문자 4자 설치 + 배선', staff:'김영남', equip:'스카이 1대', memo:'주차 협의 필요'},
+    {id:newId(), date:rel(3),  time:'08:00', end:'15:00', type:'시공', status:'예정', client:'△△빌딩', site:'안산 고잔동', work:'채널문자 4자 설치 + 배선', staff:'김영남', equip:'스카이 1대', memo:'주차 협의 필요', contact:'이과장', phone:'010-2345-6789'},
     {id:newId(), date:rel(5),  time:'10:00', end:'', type:'상담', status:'예정', client:'□□카페', site:'화성 송산', work:'파사드 갈바 마감 상담 · 견적 협의', staff:'김영남', equip:'', memo:''},
     {id:newId(), date:rel(-2), time:'09:00', end:'12:00', type:'납품', status:'완료', client:'◇◇물류', site:'평택 창고', work:'금속 파티션 6조 납품', staff:'윤승노', equip:'1톤', memo:''}
   ]);
+  items.forEach(function(it){ if(it.phone) rememberContact(it.contact, it.client, it.phone); });
   save(); render(); toast('샘플 일정 5건을 넣었습니다.');
+}
+
+
+/* ===================== 연락처 / 최근 연락 기록 ===================== */
+var CK='djs_contacts_v1', RK='djs_recent_v1';
+var contacts=[], recents=[], pickTarget=null;
+state.csort='recent';
+
+function loadContacts(){
+  try { contacts = JSON.parse(localStorage.getItem(CK)||'[]')||[]; } catch(e){ contacts=[]; }
+  try { recents  = JSON.parse(localStorage.getItem(RK)||'[]')||[]; } catch(e){ recents=[]; }
+  if(!Array.isArray(contacts)) contacts=[];
+  if(!Array.isArray(recents)) recents=[];
+}
+function saveContacts(){ try { localStorage.setItem(CK, JSON.stringify(contacts)); } catch(e){} }
+function saveRecents(){ try { localStorage.setItem(RK, JSON.stringify(recents.slice(0,60))); } catch(e){} }
+
+function normPhone(v){
+  var raw=String(v||'').trim(); if(!raw) return '';
+  var d=raw.replace(/[^0-9]/g,'');
+  if(d.indexOf('82')===0 && raw.indexOf('+')===0) d='0'+d.slice(2);
+  if(d.length===11 && d.indexOf('01')===0) return d.slice(0,3)+'-'+d.slice(3,7)+'-'+d.slice(7);
+  if(d.length===10 && d.indexOf('02')===0) return d.slice(0,2)+'-'+d.slice(2,6)+'-'+d.slice(6);
+  if(d.length===10) return d.slice(0,3)+'-'+d.slice(3,6)+'-'+d.slice(6);
+  if(d.length===9 && d.indexOf('02')===0) return d.slice(0,2)+'-'+d.slice(2,5)+'-'+d.slice(5);
+  if(d.length===8) return d.slice(0,4)+'-'+d.slice(4);
+  return raw;
+}
+function phoneKey(p){ return String(p||'').replace(/[^0-9]/g,''); }
+function safe(s){ return String(s==null?'':s).replace(/['"\\]/g,''); }
+
+function rememberContact(name, company, phone, memo){
+  phone=normPhone(phone); name=(name||'').trim(); company=(company||'').trim();
+  if(!phone && !name) return null;
+  var key=phoneKey(phone);
+  var hit=null;
+  for(var i=0;i<contacts.length;i++){
+    var c=contacts[i];
+    if(key && phoneKey(c.phone)===key){ hit=c; break; }
+    if(!key && c.name===name && (c.company||'')===company){ hit=c; break; }
+  }
+  if(hit){
+    if(name && !hit.name) hit.name=name;
+    if(company && !hit.company) hit.company=company;
+    if(phone && !hit.phone) hit.phone=phone;
+    if(memo && !hit.memo) hit.memo=memo;
+  } else {
+    hit={ id:newId(), name:name||company||phone, company:company, phone:phone, memo:memo||'', last:'', cnt:0 };
+    contacts.push(hit);
+  }
+  saveContacts();
+  return hit;
+}
+function logRecent(name, phone, kind){
+  var d=new Date();
+  recents.unshift({ name:name||'', phone:normPhone(phone), kind:kind||'전화',
+                    at:ymd(d)+' '+pad(d.getHours())+':'+pad(d.getMinutes()) });
+  recents=recents.slice(0,60);
+  saveRecents();
+  var key=phoneKey(phone);
+  contacts.forEach(function(c){ if(key && phoneKey(c.phone)===key){ c.last=recents[0].at; c.cnt=(c.cnt||0)+1; } });
+  saveContacts();
+  if(state.view==='contacts') renderContacts();
+}
+
+/* ---- 일정 → 전화 / 문자 / 카톡 버튼 ---- */
+function smsBody(it){
+  return '[디자인재성] '+dLabel(it.date)+(it.time?(' '+it.time):'')+' '+it.type+
+         (it.site?(' / '+it.site):'')+(it.work?(' - '+it.work):'')+' 관련 연락드립니다.';
+}
+function contactBtns(it){
+  var nm=safe(it.contact||it.client), ph=safe(it.phone), h='';
+  if(ph){
+    h+='<a class="ib" href="tel:'+esc(ph)+'" title="전화 걸기" onclick="logRecent(\''+nm+'\',\''+ph+'\',\'전화\')">📞</a>';
+    h+='<a class="ib" href="sms:'+esc(ph)+'?body='+encodeURIComponent(smsBody(it))+'" title="문자 보내기" onclick="logRecent(\''+nm+'\',\''+ph+'\',\'문자\')">💬</a>';
+  }
+  h+='<span class="ib kk" title="카톡으로 이 일정 보내기" onclick="shareItem(\''+it.id+'\')">💛</span>';
+  return h;
+}
+
+/* ===================== 연락처 화면 ===================== */
+function renderContacts(){
+  document.getElementById('sheet-h').textContent='연락처 · 거래처 주소록';
+  var q='';
+  var list=contacts.slice();
+  if(state.csort==='name') list.sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); });
+  else list.sort(function(a,b){ return String(b.last||'').localeCompare(String(a.last||'')) || (b.cnt||0)-(a.cnt||0); });
+
+  var h='<div class="cbar">'+
+    '<button class="pri" onclick="importFromPhone(false)">📱 휴대폰 연락처 불러오기</button>'+
+    '<button onclick="document.getElementById(\'vcffile\').click()">연락처 파일(.vcf) 가져오기</button>'+
+    '<button onclick="openContact()">＋ 직접 추가</button>'+
+    '<div class="sp"></div>'+
+    '<button onclick="state.csort=(state.csort===\'recent\'?\'name\':\'recent\'); renderContacts()">정렬: '+
+      (state.csort==='recent'?'최근 연락순':'이름순')+'</button>'+
+  '</div>';
+
+  h+='<div class="sec-t">최근 연락 기록<small>이 앱에서 전화·문자·카톡을 보낸 기록 (휴대폰 통화기록은 웹에서 읽을 수 없습니다)</small></div>';
+  if(!recents.length){
+    h+='<div class="empty" style="padding:18px">아직 기록이 없습니다. 일정 목록의 📞 · 💬 · 💛 버튼을 누르면 여기에 쌓입니다.</div>';
+  } else {
+    h+='<div class="recent">'+recents.slice(0,12).map(function(r){
+      return '<div class="rcard"><div class="rt">'+esc(r.at)+'</div>'+
+             '<div class="rn">'+esc(r.name||r.phone||'-')+'</div>'+
+             '<span class="rk">'+esc(r.kind)+'</span>'+
+             (r.phone?' <a class="tel" href="tel:'+esc(safe(r.phone))+'" onclick="logRecent(\''+safe(r.name)+'\',\''+safe(r.phone)+'\',\'전화\')">'+esc(r.phone)+'</a>':'')+
+             '</div>';
+    }).join('')+'</div>';
+    h+='<div style="margin-top:8px"><button class="ib dl" style="width:auto;padding:0 10px" onclick="clearRecents()">기록 비우기</button></div>';
+  }
+
+  h+='<div class="sec-t">거래처 주소록<small>총 '+contacts.length+'명 · 일정에 연락처를 입력하면 자동으로 등록됩니다</small></div>';
+  if(!list.length){
+    h+='<div class="empty">등록된 연락처가 없습니다.<br>휴대폰 연락처를 불러오거나 직접 추가해 주세요.</div>';
+  } else {
+    h+='<table class="clist"><thead><tr><th style="width:150px">이름</th><th style="width:130px">업체</th>'+
+       '<th style="width:130px">전화번호</th><th>메모</th><th style="width:104px">최근 연락</th><th style="width:172px">바로가기</th></tr></thead><tbody>';
+    list.forEach(function(c){
+      var nm=safe(c.name), ph=safe(c.phone);
+      h+='<tr>'+
+        '<td data-h="이름"><span class="cname">'+esc(c.name||'-')+'</span></td>'+
+        '<td data-h="업체"><span class="ccomp">'+esc(c.company||'-')+'</span></td>'+
+        '<td data-h="전화번호">'+(c.phone?'<a class="tel" href="tel:'+esc(ph)+'" onclick="logRecent(\''+nm+'\',\''+ph+'\',\'전화\')">'+esc(c.phone)+'</a>':'-')+'</td>'+
+        '<td data-h="메모">'+esc(c.memo||'-')+'</td>'+
+        '<td class="c" data-h="최근 연락">'+esc(c.last||'-')+(c.cnt?' ('+c.cnt+')':'')+'</td>'+
+        '<td class="c" data-h="바로가기">'+
+          (c.phone?'<a class="ib" href="tel:'+esc(ph)+'" title="전화" onclick="logRecent(\''+nm+'\',\''+ph+'\',\'전화\')">📞</a>'+
+                   '<a class="ib" href="sms:'+esc(ph)+'" title="문자" onclick="logRecent(\''+nm+'\',\''+ph+'\',\'문자\')">💬</a>':'')+
+          '<span class="ib" title="이 연락처로 일정 만들기" onclick="newFromContact(\''+c.id+'\')">📅</span>'+
+          '<span class="ib" title="수정" onclick="openContact(\''+c.id+'\')">✏️</span>'+
+        '</td></tr>';
+    });
+    h+='</tbody></table>';
+  }
+  document.getElementById('view-contacts').innerHTML=h;
+}
+function clearRecents(){
+  if(!confirm('최근 연락 기록을 모두 지울까요?')) return;
+  recents=[]; saveRecents(); renderContacts(); toast('기록을 비웠습니다.');
+}
+function newFromContact(id){
+  var c=contacts.filter(function(x){ return x.id===id; })[0]; if(!c) return;
+  openNew();
+  document.getElementById('m-client').value=c.company||c.name||'';
+  document.getElementById('m-contact').value=c.name||'';
+  document.getElementById('m-phone').value=c.phone||'';
+}
+
+/* ---- 연락처 추가 / 수정 ---- */
+var editContactId=null;
+function openContact(id){
+  editContactId=id||null;
+  var c=id? contacts.filter(function(x){ return x.id===id; })[0] : null;
+  document.getElementById('c-title').textContent=c?'연락처 수정':'연락처 추가';
+  document.getElementById('c-del').style.display=c?'':'none';
+  document.getElementById('c-name').value=c?(c.name||''):'';
+  document.getElementById('c-comp').value=c?(c.company||''):'';
+  document.getElementById('c-phone').value=c?(c.phone||''):'';
+  document.getElementById('c-memo').value=c?(c.memo||''):'';
+  document.getElementById('cmask').classList.add('on');
+}
+function closeContact(){ document.getElementById('cmask').classList.remove('on'); editContactId=null; }
+function saveContact(){
+  var name=document.getElementById('c-name').value.trim();
+  var comp=document.getElementById('c-comp').value.trim();
+  var phone=normPhone(document.getElementById('c-phone').value);
+  var memo=document.getElementById('c-memo').value.trim();
+  if(!name && !phone){ alert('이름 또는 전화번호를 입력해 주세요.'); return; }
+  if(editContactId){
+    contacts=contacts.map(function(c){ return c.id===editContactId? {id:c.id,name:name,company:comp,phone:phone,memo:memo,last:c.last,cnt:c.cnt} : c; });
+    saveContacts();
+  } else {
+    rememberContact(name, comp, phone, memo);
+  }
+  closeContact(); renderContacts(); toast('연락처를 저장했습니다.');
+}
+function delContact(){
+  if(!editContactId) return;
+  if(!confirm('이 연락처를 삭제할까요?')) return;
+  contacts=contacts.filter(function(c){ return c.id!==editContactId; });
+  saveContacts(); closeContact(); renderContacts(); toast('연락처를 삭제했습니다.');
+}
+
+/* ---- 일정 모달에서 연락처 선택 ---- */
+function pickContact(){
+  pickTarget='modal';
+  document.getElementById('p-q').value='';
+  renderPickList();
+  document.getElementById('pmask').classList.add('on');
+}
+function closePick(){ document.getElementById('pmask').classList.remove('on'); }
+function renderPickList(){
+  var q=document.getElementById('p-q').value.trim().toLowerCase();
+  var list=contacts.filter(function(c){
+    if(!q) return true;
+    return [c.name,c.company,c.phone,c.memo].join(' ').toLowerCase().indexOf(q)>=0;
+  }).sort(function(a,b){ return String(b.last||'').localeCompare(String(a.last||'')); });
+  var el=document.getElementById('p-list');
+  if(!list.length){ el.innerHTML='<div class="empty" style="padding:22px">저장된 연락처가 없습니다.<br>아래 [📱 휴대폰 연락처] 버튼을 눌러 불러오세요.</div>'; return; }
+  el.innerHTML=list.map(function(c){
+    return '<div class="pickrow" onclick="choosePick(\''+c.id+'\')">'+
+           '<span><b>'+esc(c.name||'-')+'</b>'+(c.company?' <span class="p2">'+esc(c.company)+'</span>':'')+'</span>'+
+           '<span class="p2">'+esc(c.phone||'')+'</span></div>';
+  }).join('');
+}
+function choosePick(id){
+  var c=contacts.filter(function(x){ return x.id===id; })[0]; if(!c) return;
+  document.getElementById('m-contact').value=c.name||'';
+  document.getElementById('m-phone').value=c.phone||'';
+  if(!document.getElementById('m-client').value && c.company) document.getElementById('m-client').value=c.company;
+  closePick();
+}
+
+/* ---- 휴대폰 연락처 불러오기 (Contact Picker API) ---- */
+function importFromPhone(intoModal){
+  if(!navigator.contacts || !navigator.contacts.select){
+    alert('이 브라우저에서는 휴대폰 주소록을 직접 열 수 없습니다.\n\n· 지원: 안드로이드 크롬 + https 주소로 열었을 때\n· 아이폰/PC: [연락처 파일(.vcf) 가져오기]를 이용하거나 직접 입력해 주세요.\n  (아이폰: 연락처 > 공유 > 파일에 저장 → .vcf)');
+    return;
+  }
+  navigator.contacts.select(['name','tel'], {multiple:!intoModal}).then(function(sel){
+    if(!sel || !sel.length) return;
+    var first=null, n=0;
+    sel.forEach(function(c){
+      var nm=(c.name && c.name[0]) || '';
+      var tel=(c.tel && c.tel[0]) || '';
+      var saved=rememberContact(nm, '', tel);
+      if(saved){ n++; if(!first) first=saved; }
+    });
+    if(intoModal && first){
+      document.getElementById('m-contact').value=first.name||'';
+      document.getElementById('m-phone').value=first.phone||'';
+      closePick();
+    }
+    if(state.view==='contacts') renderContacts();
+    renderPickList();
+    toast('연락처 '+n+'명을 가져왔습니다.');
+  }).catch(function(){ /* 사용자가 취소 */ });
+}
+
+/* ---- 연락처 파일(.vcf) 가져오기 ---- */
+function importVCF(input){
+  var f=input.files && input.files[0]; if(!f) return;
+  var rd=new FileReader();
+  rd.onload=function(){
+    var txt=String(rd.result).replace(/\r\n[ \t]/g,'').replace(/\r/g,'');
+    var cards=txt.split(/BEGIN:VCARD/i).slice(1), n=0;
+    cards.forEach(function(card){
+      var name='', comp='', tel='';
+      card.split('\n').forEach(function(line){
+        var l=line.trim(); if(!l) return;
+        var up=l.toUpperCase();
+        if(up.indexOf('FN')===0 && l.indexOf(':')>0 && !name) name=l.slice(l.indexOf(':')+1).trim();
+        else if(up.indexOf('N:')===0 && !name) name=l.slice(2).split(';').filter(Boolean).reverse().join(' ').trim();
+        else if(up.indexOf('ORG')===0 && l.indexOf(':')>0 && !comp) comp=l.slice(l.indexOf(':')+1).split(';')[0].trim();
+        else if(up.indexOf('TEL')===0 && l.indexOf(':')>0 && !tel) tel=l.slice(l.indexOf(':')+1).trim();
+      });
+      if(name || tel){ rememberContact(name, comp, tel); n++; }
+    });
+    input.value='';
+    if(!n){ alert('연락처를 찾지 못했습니다. .vcf 파일이 맞는지 확인해 주세요.'); return; }
+    if(state.view==='contacts') renderContacts(); else setView('contacts');
+    toast('연락처 파일에서 '+n+'명을 가져왔습니다.');
+  };
+  rd.readAsText(f, 'utf-8');
+}
+
+/* ===================== 카톡 공유 (Web Share) ===================== */
+function kakaoTextOfItem(it){
+  var L=['[디자인재성 작업일정]',
+         '· 일시 : '+dLabel(it.date)+(it.time?(' '+it.time+(it.end?('~'+it.end):'')):''),
+         '· 구분 : '+it.type];
+  if(it.client) L.push('· 업체 : '+it.client);
+  if(it.site) L.push('· 현장 : '+it.site);
+  if(it.work) L.push('· 작업 : '+it.work);
+  if(it.contact||it.phone) L.push('· 현장 담당 : '+[it.contact,it.phone].filter(Boolean).join(' '));
+  if(it.staff) L.push('· 당사 담당 : '+it.staff);
+  if(it.equip) L.push('· 차량/장비 : '+it.equip);
+  if(it.memo) L.push('· 메모 : '+it.memo);
+  L.push('', '디자인재성 010-9451-9804');
+  return L.join('\n');
+}
+function shareText(txt, title){
+  if(navigator.share){
+    navigator.share({ title: title||'디자인재성 작업일정', text: txt })
+      .then(function(){ toast('공유창을 열었습니다.'); })
+      .catch(function(){});
+  } else {
+    copyText(txt);
+    setTimeout(function(){ toast('복사했습니다. 카톡에 붙여넣기 하세요.'); }, 300);
+  }
+}
+function shareItem(id){
+  var it=items.filter(function(x){ return x.id===id; })[0]; if(!it) return;
+  logRecent(it.contact||it.client, it.phone, '카톡');
+  shareText(kakaoTextOfItem(it));
+}
+function shareKakao(){
+  var rows=currentRows(), r=periodRange();
+  if(!rows.length){ alert('해당 기간에 일정이 없습니다.'); return; }
+  var txt='[디자인재성 작업일정] '+r.t+'\n', last='';
+  rows.forEach(function(it){
+    if(it.date!==last){ txt+='\n■ '+dLabel(it.date)+'\n'; last=it.date; }
+    txt+=' · '+(it.time?it.time+' ':'')+it.type+
+         ([it.client,it.site].filter(Boolean).length? ' | '+[it.client,it.site].filter(Boolean).join(' / '):'')+
+         (it.work?' - '+it.work:'')+'\n';
+  });
+  txt+='\n문의 010-9451-9804 디자인재성';
+  shareText(txt);
+}
+
+/* ===================== 카톡 대화 → 일정 ===================== */
+var kakaoCands=[];
+var TYPEKW=[
+  {t:'실측', k:['실측','측정','치수','실사','현장확인']},
+  {t:'시공', k:['시공','설치','부착','철거','교체','작업']},
+  {t:'제작', k:['제작','도장','용접','가공','생산']},
+  {t:'납품', k:['납품','배송','출고','전달']},
+  {t:'상담', k:['미팅','상담','방문','견적','협의','회의']},
+  {t:'A/S',  k:['a/s','as ','수리','하자','보수','점검']}
+];
+function openKakaoImport(){
+  document.getElementById('k-result').innerHTML='';
+  document.getElementById('kmask').classList.add('on');
+}
+function closeKakaoImport(){ document.getElementById('kmask').classList.remove('on'); }
+function loadKakaoFile(input){
+  var f=input.files && input.files[0]; if(!f) return;
+  var rd=new FileReader();
+  rd.onload=function(){ document.getElementById('k-text').value=String(rd.result).replace(/^\ufeff/,''); input.value=''; runKakaoParse(); };
+  rd.readAsText(f, 'utf-8');
+}
+function hour24(mer,h){
+  if(mer==='오후' && h<12) return h+12;
+  if(mer==='오전' && h===12) return 0;
+  return h;
+}
+function parseKakaoLines(text){
+  var lines=String(text||'').replace(/\r/g,'').split('\n'), msgs=[], cur=null;
+  var reA=/^(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일\s*(오전|오후)\s*(\d{1,2}):(\d{2}),\s*(.+?)\s*:\s*([\s\S]*)$/;
+  var reI=/^(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\.\s*(오전|오후)\s*(\d{1,2}):(\d{2}),\s*(.+?)\s*:\s*([\s\S]*)$/;
+  var reB=/^\[(.+?)\]\s*\[(오전|오후)\s*(\d{1,2}):(\d{2})\]\s*([\s\S]*)$/;
+  var reS=/^[-\s]*(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/;
+  var reS2=/^[-\s]*(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\./;
+  lines.forEach(function(ln){
+    var t=ln.trim(); if(!t) return;
+    var m=t.match(reA)||t.match(reI);
+    if(m){ cur=new Date(+m[1], +m[2]-1, +m[3]);
+           msgs.push({d:new Date(cur), t:pad(hour24(m[4],+m[5]))+':'+pad(+m[6]), who:m[7], msg:m[8]}); return; }
+    if((m=t.match(reB))){ msgs.push({d:cur?new Date(cur):null, t:pad(hour24(m[2],+m[3]))+':'+pad(+m[4]), who:m[1], msg:m[5]}); return; }
+    if((m=t.match(reS))||(m=t.match(reS2))){ cur=new Date(+m[1], +m[2]-1, +m[3]); return; }
+    msgs.push({d:cur?new Date(cur):null, t:'', who:'', msg:t});
+  });
+  return msgs;
+}
+function findType(txt){
+  var low=txt.toLowerCase();
+  for(var i=0;i<TYPEKW.length;i++){
+    for(var j=0;j<TYPEKW[i].k.length;j++){ if(low.indexOf(TYPEKW[i].k[j])>=0) return TYPEKW[i].t; }
+  }
+  return '';
+}
+function findDate(txt, base){
+  var b=base? new Date(base.getFullYear(),base.getMonth(),base.getDate()) : new Date();
+  var m;
+  if((m=txt.match(/(\d{1,2})\s*월\s*(\d{1,2})\s*일/))) return new Date(b.getFullYear(), +m[1]-1, +m[2]);
+  if((m=txt.match(/(\d{1,2})\s*\/\s*(\d{1,2})/))) return new Date(b.getFullYear(), +m[1]-1, +m[2]);
+  if(/모레|내일모레/.test(txt)) return addDays(b,2);
+  if(/내일|낼/.test(txt)) return addDays(b,1);
+  if(/오늘|금일/.test(txt)) return b;
+  if((m=txt.match(/(이번|담|다음)?\s*주?\s*([일월화수목금토])\s*요일/))){
+    var target=WD.indexOf(m[2]), mod=m[1]||'';
+    if(/다음|담/.test(mod)) return addDays(weekStart(b), target+7);
+    if(/이번/.test(mod)) return addDays(weekStart(b), target);
+    var diff=(target-b.getDay()+7)%7;
+    return addDays(b, diff===0?7:diff);
+  }
+  if((m=txt.match(/(\d{1,2})\s*일/))){
+    var day=+m[1]; if(day<1||day>31) return null;
+    var d2=new Date(b.getFullYear(), b.getMonth(), day);
+    if(day<b.getDate()) d2=new Date(b.getFullYear(), b.getMonth()+1, day);
+    return d2;
+  }
+  return null;
+}
+function findTime(txt){
+  var m=txt.match(/(오전|오후|아침|점심|저녁|밤|새벽)?\s*(\d{1,2})\s*(?::|시)\s*(\d{1,2})?\s*분?/);
+  if(!m) return '';
+  var mer=m[1]||'', h=+m[2], mi=m[3]?+m[3]:0;
+  if(h>23||mi>59) return '';
+  if(/오후|저녁|밤|점심/.test(mer) && h<12) h+=12;
+  else if(/오전|아침|새벽/.test(mer) && h===12) h=0;
+  else if(!mer && h>=1 && h<=7) h+=12;
+  return pad(h)+':'+pad(mi);
+}
+function runKakaoParse(){
+  var text=document.getElementById('k-text').value;
+  if(!text.trim()){ alert('카톡 대화 내용을 붙여넣어 주세요.'); return; }
+  var msgs=parseKakaoLines(text), out=[], seen={};
+  msgs.forEach(function(m){
+    var msg=String(m.msg||'').trim();
+    if(!msg || msg.length>200) return;
+    if(/^(사진|동영상|이모티콘|삭제된 메시지|샵검색)/.test(msg)) return;
+    var base=m.d||new Date();
+    var d=findDate(msg, base);
+    if(!d) return;
+    var tp=findType(msg), tm=findTime(msg);
+    if(!tp && !tm) return;
+    var key=ymd(d)+'|'+tm+'|'+msg.slice(0,20);
+    if(seen[key]) return; seen[key]=1;
+    out.push({ date:ymd(d), time:tm||'09:00', type:tp||'상담',
+               client:(m.who||'').replace(/\s+/g,' ').trim(),
+               work:msg.slice(0,80), raw:(m.d? dLabel(ymd(m.d))+' ':'')+(m.who?m.who+' : ':'')+msg });
+  });
+  kakaoCands=out;
+  var el=document.getElementById('k-result');
+  if(!out.length){
+    el.innerHTML='<div class="empty">일정으로 볼 만한 내용을 찾지 못했습니다.<br>' +
+      '날짜(예: 20일, 8월 20일, 내일)와 시간 또는 작업 종류(실측·시공·납품 등)가 함께 적힌 문장을 인식합니다.</div>';
+    return;
+  }
+  var h='<div class="sec-t">찾은 일정 '+out.length+'건<small>내용을 확인·수정한 뒤 [선택 항목 등록]을 누르세요</small></div>'+
+        '<table class="krev"><thead><tr><th style="width:34px">선택</th><th style="width:120px">날짜</th><th style="width:88px">시간</th>'+
+        '<th style="width:80px">구분</th><th style="width:130px">업체</th><th>작업 내용 / 원문</th></tr></thead><tbody>';
+  out.forEach(function(c,i){
+    h+='<tr data-i="'+i+'">'+
+       '<td class="c" data-h="선택"><input type="checkbox" class="kchk" checked></td>'+
+       '<td data-h="날짜"><input type="date" class="kdate" value="'+esc(c.date)+'"></td>'+
+       '<td data-h="시간"><input type="time" class="ktime" value="'+esc(c.time)+'"></td>'+
+       '<td data-h="구분"><select class="ktype">'+TYPES.map(function(t){
+            return '<option'+(t.n===c.type?' selected':'')+'>'+esc(t.n)+'</option>'; }).join('')+'</select></td>'+
+       '<td data-h="업체"><input class="kclient" value="'+esc(c.client)+'"></td>'+
+       '<td data-h="작업 내용"><input class="kwork" value="'+esc(c.work)+'"><div class="raw">'+esc(c.raw)+'</div></td>'+
+       '</tr>';
+  });
+  h+='</tbody></table>'+
+     '<div class="cbar" style="margin-top:12px"><button class="pri" onclick="addKakaoSelected()">선택 항목 일정 등록</button>'+
+     '<button onclick="document.querySelectorAll(\'.kchk\').forEach(function(c){c.checked=!c.checked})">선택 반전</button></div>';
+  el.innerHTML=h;
+}
+function addKakaoSelected(){
+  var rows=document.querySelectorAll('#k-result table.krev tbody tr'), n=0;
+  rows.forEach(function(tr){
+    if(!tr.querySelector('.kchk').checked) return;
+    var date=tr.querySelector('.kdate').value;
+    if(!date) return;
+    items.push({ id:newId(), date:date, time:tr.querySelector('.ktime').value, end:'',
+                 type:tr.querySelector('.ktype').value, status:'예정',
+                 client:tr.querySelector('.kclient').value.trim(), site:'',
+                 work:tr.querySelector('.kwork').value.trim(), staff:'', equip:'', memo:'카톡 대화에서 등록',
+                 contact:'', phone:'' });
+    n++;
+  });
+  if(!n){ alert('등록할 항목을 선택해 주세요.'); return; }
+  save(); closeKakaoImport();
+  if(state.view==='contacts') setView('month'); else render();
+  toast(n+'건을 일정으로 등록했습니다.');
 }
 
 /* ===================== 초기화 ===================== */
@@ -722,6 +1320,7 @@ document.addEventListener('keydown', function(e){
   if(document.getElementById('mask').classList.contains('on') && (e.key==='Enter') && (e.ctrlKey||e.metaKey)) saveItem();
 });
 load();
+loadContacts();
 fillModalSelects();
 setView('month');
 </script>
