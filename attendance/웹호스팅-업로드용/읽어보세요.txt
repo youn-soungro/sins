@@ -1,0 +1,40 @@
+[ 이 폴더는 무엇인가요? ]
+
+지금 쓰고 계신 웹호스팅(카페24·가비아 등)에는 이 근태관리 프로그램을
+직접 설치할 수 없습니다. 웹호스팅은 PHP 전용이라 Node.js가 실행되지 않기 때문입니다.
+
+대신 이 폴더의 attendance.html 파일 하나만 기존 홈페이지에 올려두면,
+직원들이 회사 홈페이지 주소로 들어와서 출퇴근을 찍을 수 있습니다.
+
+
+[ 사용 방법 ]
+
+1. 먼저 실행방법.md 의 "① 인터넷 배포" 를 따라 배포합니다.
+   배포가 끝나면 https://OOOO.vercel.app 같은 주소가 나옵니다.
+
+2. attendance.html 을 메모장으로 엽니다.
+
+3. 아래 두 줄에서 "주소를-여기에-입력.vercel.app" 부분을
+   2번에서 받은 실제 주소로 바꿉니다. (두 군데 모두)
+
+   <a class="btn emp" href="https://주소를-여기에-입력.vercel.app/employee/login">
+   <a class="btn adm" href="https://주소를-여기에-입력.vercel.app/login">
+
+   예시)
+   <a class="btn emp" href="https://sins-attendance.vercel.app/employee/login">
+   <a class="btn adm" href="https://sins-attendance.vercel.app/login">
+
+4. 저장한 뒤, 홈페이지 FTP 로 접속해서 attendance.html 을
+   기존 index.html 이 있는 폴더(보통 /www 또는 /public_html)에 올립니다.
+
+5. 이제 직원들에게 아래 주소를 알려주면 됩니다.
+
+   http://회사홈페이지주소/attendance.html
+
+
+[ 주의 ]
+
+- 기존 홈페이지 파일은 절대 지우거나 덮어쓰지 마세요.
+  attendance.html 은 새 파일이라 기존 홈페이지에 영향을 주지 않습니다.
+- 파일 이름을 한글로 바꾸면 일부 호스팅에서 깨질 수 있으니
+  attendance.html 그대로 쓰시는 것을 권합니다.
