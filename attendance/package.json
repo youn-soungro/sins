@@ -4,9 +4,9 @@
   "private": true,
   "description": "디자인재성 직원 일당·출퇴근 통합 관리 시스템",
   "scripts": {
-    "dev": "next dev -p 3000",
+    "dev": "next dev -p 3100",
     "build": "prisma generate && next build",
-    "start": "next start -p 3000",
+    "start": "next start -p 3100",
     "setup": "prisma migrate deploy && tsx prisma/seed.ts",
     "deploy:build": "prisma generate && prisma migrate deploy && tsx prisma/seed.ts && next build",
     "lint": "next lint",

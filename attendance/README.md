@@ -35,7 +35,7 @@ cp .env.example .env      # 값을 실제 환경에 맞게 수정
 ```bash
 npm run setup    # DB 테이블 생성 + 최초 관리자 계정·기본 설정 (여러 번 실행해도 안전)
 npm run build
-npm start        # http://localhost:3000
+npm start        # http://localhost:3100
 ```
 
 개발 중에는 `npm run dev` 를 사용합니다.
@@ -151,7 +151,7 @@ npm run backup      # backups/ 폴더에 저장 (pg_dump 있으면 SQL, 없으�
 `.env` 에 `MAINTENANCE_KEY` 를 지정한 뒤:
 
 ```bash
-0 4 * * * curl -X POST -H "x-maintenance-key: 키값" http://localhost:3000/api/maintenance/auto-close
+0 4 * * * curl -X POST -H "x-maintenance-key: 키값" http://localhost:3100/api/maintenance/auto-close
 ```
 
 ---
