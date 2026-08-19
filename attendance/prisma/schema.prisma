@@ -1,0 +1,542 @@
+// 디자인재성 직원 일당·출퇴근 통합 관리 시스템
+// 모든 시각은 UTC 로 저장하고 표시할 때 KST(Asia/Seoul)로 변환한다.
+// (서버 타임존이 무엇이든 동일하게 동작하도록 src/lib/time.ts 에서 오프셋을 직접 계산한다)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ───────────────────────── 열거형 ─────────────────────────
+
+enum Role {
+  ADMIN // 관리자
+  EMPLOYEE // 직원
+}
+
+enum EmployeeStatus {
+  ACTIVE // 재직
+  LEAVE // 휴직
+  RESIGNED // 퇴사
+}
+
+enum WorkplaceType {
+  FACTORY // 디자인재성 공장
+  SITE // 외부 현장
+  ETC // 기타
+}
+
+enum ProjectStatus {
+  PLANNED // 예정
+  ONGOING // 진행중
+  DONE // 완료
+  HOLD // 보류
+}
+
+/// 일당 계산방식
+enum PayCalcMethod {
+  FULL_DAY // 방식 A: 정상근무 시 일당 전액
+  HOURLY_PRORATED // 방식 B: 시간 비례
+  DAY_PLUS_OT // 방식 C: 일당 + 연장수당
+}
+
+enum AttendanceStatus {
+  WORKING // 근무중
+  ON_BREAK // 휴게중
+  DONE // 퇴근완료
+  ABSENT // 결근
+  LEAVE_DAY // 휴무/연차
+}
+
+enum GpsCheck {
+  OK // 허용반경 이내
+  OUT_OF_RANGE // 반경 이탈
+  NO_GPS // 위치정보 없음
+  APPROVED // 반경 이탈이나 관리자 승인
+}
+
+enum AllowanceType {
+  OVERTIME // 연장수당
+  NIGHT // 야간수당
+  HOLIDAY // 휴일수당
+  MEAL // 식대
+  LODGING // 숙박비
+  VEHICLE // 차량비
+  TRIP // 출장비
+  HAZARD // 위험수당
+  ETC // 기타수당
+}
+
+enum DeductionType {
+  PREPAY // 선지급
+  ADVANCE // 가불
+  MEAL // 식대공제
+  LODGING // 숙박비공제
+  EQUIPMENT_LOSS // 장비손실
+  ETC // 기타공제
+}
+
+enum PayrollStatus {
+  DRAFT // 미정산
+  CONFIRMED // 정산완료
+  UNPAID // 미지급
+  PARTIAL // 일부지급
+  PAID // 지급완료
+}
+
+enum PaymentMethod {
+  TRANSFER // 계좌이체
+  CASH // 현금
+  ETC // 기타
+}
+
+enum EditRequestStatus {
+  PENDING // 대기
+  APPROVED // 승인
+  REJECTED // 반려
+}
+
+enum NotificationType {
+  CHECK_IN // 출근
+  CHECK_OUT // 퇴근
+  NO_SHOW // 미출근
+  OVERTIME // 연장근무
+  EDIT_REQUEST // 수정요청
+  PAYROLL // 정산
+  ETC
+}
+
+// ───────────────────────── 계정 ─────────────────────────
+
+model User {
+  id           String    @id @default(cuid())
+  loginId      String    @unique /// 관리자: 아이디 / 직원: 휴대폰번호(숫자만)
+  passwordHash String /// 관리자: 비밀번호 / 직원: PIN
+  name         String
+  role         Role      @default(EMPLOYEE)
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  employee     Employee?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([role, isActive])
+  @@map("users")
+}
+
+// ───────────────────────── 직원 ─────────────────────────
+
+model Employee {
+  id          String         @id @default(cuid())
+  empNo       String         @unique /// 직원번호
+  name        String
+  phone       String         @unique /// 휴대폰번호 (숫자만 저장)
+  hireDate    DateTime       @db.Date
+  resignDate  DateTime?      @db.Date
+  status      EmployeeStatus @default(ACTIVE)
+  jobType     String? /// 직종
+  bankName    String?
+  bankAccount String?
+  memo        String?
+
+  userId String? @unique
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  payRates      EmployeePayRate[]
+  attendances   Attendance[]
+  allowances    Allowance[]
+  deductions    Deduction[]
+  payrolls      Payroll[]
+  editRequests  AttendanceEditRequest[]
+  notifications Notification[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([name])
+  @@map("employees")
+}
+
+/// 직원별 단가. effectiveFrom 기준으로 이력을 남겨 과거 정산이 바뀌지 않게 한다.
+model EmployeePayRate {
+  id         String   @id @default(cuid())
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  effectiveFrom DateTime @db.Date /// 적용 시작일
+
+  calcMethod PayCalcMethod @default(DAY_PLUS_OT) /// 일당 계산방식 A/B/C
+
+  baseDailyWage    Int @default(0) /// 기본 일당
+  factoryDailyWage Int @default(0) /// 공장 일당
+  siteDailyWage    Int @default(0) /// 현장 일당
+
+  overtimeHourlyRate Int @default(0) /// 연장근무 시간당 단가 (0이면 일당÷기준시간으로 자동계산)
+  nightHourlyRate    Int @default(0) /// 야간근무 시간당 단가
+  holidayHourlyRate  Int @default(0) /// 휴일근무 시간당 단가
+
+  mealAllowance    Int @default(0) /// 식대 (일)
+  lodgingAllowance Int @default(0) /// 숙박비 (일)
+  vehicleAllowance Int @default(0) /// 차량비 (일)
+  otherAllowance   Int @default(0) /// 기타 고정수당 (일)
+
+  memo      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([employeeId, effectiveFrom])
+  @@index([employeeId, effectiveFrom])
+  @@map("employee_pay_rates")
+}
+
+// ───────────────────────── 근무지 / 현장 ─────────────────────────
+
+model Workplace {
+  id       String        @id @default(cuid())
+  name     String        @unique
+  type     WorkplaceType @default(SITE)
+  address  String?
+  lat      Float?
+  lng      Float?
+  radiusM  Int           @default(200) /// 허용반경(m)
+  isActive Boolean       @default(true)
+  memo     String?
+
+  attendances Attendance[]
+  projects    Project[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([type, isActive])
+  @@map("workplaces")
+}
+
+/// 외부 현장 (공사 단위)
+model Project {
+  id           String        @id @default(cuid())
+  name         String /// 현장명
+  clientName   String? /// 고객명
+  address      String?
+  manager      String? /// 담당자
+  managerPhone String?
+  startDate    DateTime?     @db.Date
+  endDate      DateTime?     @db.Date
+  status       ProjectStatus @default(ONGOING)
+  memo         String?
+
+  workplaceId String?
+  workplace   Workplace? @relation(fields: [workplaceId], references: [id], onDelete: SetNull)
+
+  attendances Attendance[]
+  allowances  Allowance[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([name])
+  @@map("projects")
+}
+
+// ───────────────────────── 출퇴근 ─────────────────────────
+
+model Attendance {
+  id         String   @id @default(cuid())
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  workDate DateTime @db.Date /// 근무일 = KST 기준 출근일. 야간근무로 자정을 넘겨도 출근일에 귀속된다.
+
+  checkInAt  DateTime?
+  checkOutAt DateTime?
+
+  workplaceId String?
+  workplace   Workplace? @relation(fields: [workplaceId], references: [id], onDelete: SetNull)
+  projectId   String?
+  project     Project?   @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  workType WorkplaceType @default(FACTORY) /// 공장 / 현장 / 기타 구분
+
+  status AttendanceStatus @default(WORKING)
+
+  // GPS / 기기 정보
+  checkInLat        Float?
+  checkInLng        Float?
+  checkInDistanceM  Int?
+  checkInGps        GpsCheck @default(NO_GPS)
+  checkOutLat       Float?
+  checkOutLng       Float?
+  checkOutDistanceM Int?
+  checkOutGps       GpsCheck @default(NO_GPS)
+  checkInIp         String?
+  checkOutIp        String?
+  checkInDevice     String?
+  checkOutDevice    String?
+  photoUrl          String? /// 출근 사진
+
+  isLate        Boolean   @default(false) /// 지각
+  isAutoClosed  Boolean   @default(false) /// 퇴근 누락으로 자동 마감된 기록
+  gpsApprovedBy String? /// 반경 이탈 승인 관리자
+  gpsApprovedAt DateTime?
+
+  // 계산 결과 (스냅샷 — 단가가 나중에 바뀌어도 과거 값이 유지된다)
+  totalMinutes    Int     @default(0) /// 총 체류시간(분)
+  breakMinutes    Int     @default(0) /// 휴게시간(분)
+  actualMinutes   Int     @default(0) /// 실근무(분)
+  normalMinutes   Int     @default(0) /// 기본근무(분)
+  overtimeMinutes Int     @default(0) /// 연장근무(분)
+  nightMinutes    Int     @default(0) /// 야간근무(분) 22:00~06:00
+  isHoliday       Boolean @default(false)
+
+  appliedCalcMethod PayCalcMethod @default(DAY_PLUS_OT)
+  appliedDailyWage  Int           @default(0) /// 적용된 일당 단가
+  appliedOtRate     Int           @default(0) /// 적용된 연장 시간당 단가
+
+  basePay        Int @default(0) /// 기본 일당 금액
+  overtimePay    Int @default(0) /// 연장수당
+  nightPay       Int @default(0) /// 야간수당
+  holidayPay     Int @default(0) /// 휴일수당
+  allowanceTotal Int @default(0) /// 당일 추가수당 합계
+  dayTotalPay    Int @default(0) /// 당일 지급예정 총액
+
+  adminMemo    String?
+  employeeMemo String?
+
+  breaks       BreakLog[]
+  allowances   Allowance[]
+  editRequests AttendanceEditRequest[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([employeeId, workDate]) /// 중복 출근 방지
+  @@index([workDate])
+  @@index([status])
+  @@index([projectId, workDate])
+  @@index([workplaceId, workDate])
+  @@map("attendance")
+}
+
+model BreakLog {
+  id           String     @id @default(cuid())
+  attendanceId String
+  attendance   Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+
+  startAt DateTime
+  endAt   DateTime?
+  minutes Int       @default(0)
+  memo    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([attendanceId])
+  @@map("breaks")
+}
+
+// ───────────────────────── 수당 / 공제 ─────────────────────────
+
+model Allowance {
+  id         String   @id @default(cuid())
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  attendanceId String?
+  attendance   Attendance? @relation(fields: [attendanceId], references: [id], onDelete: SetNull)
+  projectId    String?
+  project      Project?    @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  workDate DateTime      @db.Date
+  type     AllowanceType
+  amount   Int
+  memo     String?
+
+  isAuto    Boolean @default(false) /// 단가표에서 자동 생성된 항목인지
+  createdBy String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([employeeId, workDate])
+  @@index([workDate])
+  @@map("allowances")
+}
+
+model Deduction {
+  id         String   @id @default(cuid())
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  workDate DateTime      @db.Date
+  type     DeductionType
+  amount   Int
+  reason   String /// 공제사유 필수
+
+  createdBy String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([employeeId, workDate])
+  @@map("deductions")
+}
+
+// ───────────────────────── 정산 / 지급 ─────────────────────────
+
+model Payroll {
+  id         String   @id @default(cuid())
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  year        Int
+  month       Int
+  periodStart DateTime @db.Date
+  periodEnd   DateTime @db.Date
+
+  workDays        Int @default(0)
+  factoryDays     Int @default(0)
+  siteDays        Int @default(0)
+  normalMinutes   Int @default(0)
+  overtimeMinutes Int @default(0)
+
+  basePayTotal        Int @default(0)
+  overtimePayTotal    Int @default(0)
+  nightPayTotal       Int @default(0)
+  holidayPayTotal     Int @default(0)
+  mealTotal           Int @default(0)
+  lodgingTotal        Int @default(0)
+  vehicleTotal        Int @default(0)
+  otherAllowanceTotal Int @default(0)
+  allowanceTotal      Int @default(0)
+  deductionTotal      Int @default(0)
+  grossTotal          Int @default(0) /// 지급 예정금액
+  netTotal            Int @default(0) /// 공제 후 최종 지급액
+  paidTotal           Int @default(0)
+  unpaidTotal         Int @default(0)
+
+  status PayrollStatus @default(DRAFT)
+  memo   String?
+
+  confirmedAt         DateTime? /// 관리자 정산확정 시각
+  confirmedBy         String?
+  employeeConfirmedAt DateTime? /// 직원 "정산 확인" 시각
+
+  payments Payment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([employeeId, year, month])
+  @@index([year, month])
+  @@index([status])
+  @@map("payroll")
+}
+
+model Payment {
+  id        String  @id @default(cuid())
+  payrollId String
+  payroll   Payroll @relation(fields: [payrollId], references: [id], onDelete: Cascade)
+
+  amount    Int
+  paidAt    DateTime
+  method    PaymentMethod @default(TRANSFER)
+  memo      String?
+  createdBy String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([payrollId])
+  @@index([paidAt])
+  @@map("payments")
+}
+
+// ───────────────────────── 수정요청 / 감사로그 ─────────────────────────
+
+model AttendanceEditRequest {
+  id           String     @id @default(cuid())
+  attendanceId String
+  attendance   Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  employeeId   String
+  employee     Employee   @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  currentCheckIn  DateTime?
+  currentCheckOut DateTime?
+  requestCheckIn  DateTime?
+  requestCheckOut DateTime?
+  reason          String /// 요청사유 필수
+
+  status     EditRequestStatus @default(PENDING)
+  reviewedBy String?
+  reviewedAt DateTime?
+  reviewMemo String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([employeeId])
+  @@map("attendance_edit_requests")
+}
+
+/// 모든 변경 이력을 보존한다. 절대 삭제하지 않는다.
+model AuditLog {
+  id       String @id @default(cuid())
+  entity   String /// 대상 테이블명
+  entityId String
+  action   String /// CREATE / UPDATE / DELETE / APPROVE / LOGIN 등
+
+  beforeJson Json?
+  afterJson  Json?
+
+  actorId   String? /// 수정한 사용자 id
+  actorName String?
+  actorRole String?
+  reason    String? /// 수정사유
+  ip        String?
+
+  createdAt DateTime @default(now())
+
+  @@index([entity, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+// ───────────────────────── 설정 / 알림 ─────────────────────────
+
+model Setting {
+  key       String   @id
+  value     String
+  memo      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}
+
+/// 알림 구조 (향후 카카오/푸시 연동 확장용)
+model Notification {
+  id         String           @id @default(cuid())
+  type       NotificationType
+  title      String
+  body       String
+  targetRole Role? /// 관리자 알림이면 ADMIN
+  employeeId String?
+  employee   Employee?        @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  readAt DateTime?
+  sentAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([targetRole, readAt])
+  @@index([createdAt])
+  @@map("notifications")
+}
