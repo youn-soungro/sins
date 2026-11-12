@@ -1,0 +1,326 @@
+<title>홍성향우회 이취임식 준비</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+/* 쪽빛 바탕에 단청 붉은색 한 점: 행사 본부 상황판처럼 위에 요약, 아래 탭별 목록 */
+:root{
+  --bg:#f3f4f7; --surface:#ffffff; --ink:#1b2333; --muted:#5d6678; --line:#d9dde6;
+  --navy:#22385c; --navy-ink:#ffffff; --red:#b23a2e;
+  --s0:#e6e8ee; --s0-ink:#4a5263; --s1:#fbe9c4; --s1-ink:#7a5208; --s2:#d5ecdc; --s2-ink:#1d6236; --s3:#f6d9d5; --s3-ink:#8f2a20;
+  --focus:#3b6fd1;
+  --f-display:'Gowun Batang', 'Noto Serif KR', serif;
+  --f-body:'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#121722; --surface:#1b2230; --ink:#e7eaf1; --muted:#9aa3b5; --line:#2e3748;
+  --navy:#2c4a78; --navy-ink:#ffffff; --red:#e0685b;
+  --s0:#2a3242; --s0-ink:#c3c9d6; --s1:#4a3a14; --s1-ink:#f3d58f; --s2:#1d3d2a; --s2-ink:#9fd9b2; --s3:#4a221e; --s3-ink:#f2aca3;
+  --focus:#7aa2ff; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#121722; --surface:#1b2230; --ink:#e7eaf1; --muted:#9aa3b5; --line:#2e3748;
+  --navy:#2c4a78; --navy-ink:#ffffff; --red:#e0685b;
+  --s0:#2a3242; --s0-ink:#c3c9d6; --s1:#4a3a14; --s1-ink:#f3d58f; --s2:#1d3d2a; --s2-ink:#9fd9b2; --s3:#4a221e; --s3-ink:#f2aca3;
+  --focus:#7aa2ff; color-scheme:dark; }
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--f-body); font-size:15px; line-height:1.55; margin:0}
+.wrap{max-width:960px; margin:0 auto; padding-block:20px 48px; padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px))}
+button,input,select{font:inherit; color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--focus); outline-offset:2px}
+
+/* 머리 */
+.hero{background:var(--navy); color:var(--navy-ink); border-radius:6px; padding:20px 22px; display:grid; grid-template-columns:1fr auto; gap:16px; align-items:center}
+.hero .org{font-size:13px; opacity:.85; letter-spacing:.06em}
+.hero h1{font-family:var(--f-display); font-size:28px; line-height:1.25; margin:2px 0 8px; text-wrap:balance}
+.hero .facts{display:flex; flex-wrap:wrap; gap:6px 16px; font-size:14px; opacity:.95}
+.hero .facts b{font-weight:600}
+.dday{text-align:center; min-width:96px}
+.dday .n{font-family:var(--f-display); font-size:40px; line-height:1; font-variant-numeric:tabular-nums}
+.dday .l{font-size:12px; opacity:.85; margin-top:4px}
+.hero .edit-meta{background:transparent; border:1px solid rgba(255,255,255,.5); color:var(--navy-ink); border-radius:4px; padding:3px 10px; font-size:13px; margin-top:10px}
+.stamp{color:var(--red); font-weight:700}
+
+/* 요약 */
+.summary{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin:14px 0 6px}
+.sum{background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:10px 12px; text-align:left}
+.sum .k{font-size:12.5px; color:var(--muted)}
+.sum .v{font-size:20px; font-weight:700; font-variant-numeric:tabular-nums}
+.sum .v small{font-size:13px; font-weight:500; color:var(--muted)}
+.bar{height:6px; background:var(--s0); border-radius:3px; overflow:hidden; margin-top:6px}
+.bar i{display:block; height:100%; background:var(--navy)}
+.notice{font-size:13px; color:var(--muted); margin:6px 0 0}
+.notice.warn{color:var(--s3-ink)}
+
+/* 탭 */
+.tabs{display:flex; gap:4px; border-bottom:2px solid var(--line); margin:18px 0 0; overflow-x:auto}
+.tab{background:none; border:0; padding:10px 14px; font-weight:600; color:var(--muted); border-bottom:3px solid transparent; margin-bottom:-2px; white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ink); border-bottom-color:var(--red)}
+.tab .c{font-weight:500; font-size:12px; color:var(--muted); margin-left:4px; font-variant-numeric:tabular-nums}
+.toolbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:space-between; margin:14px 0 8px}
+.toolbar .hint{font-size:13px; color:var(--muted)}
+.btn{border:1px solid var(--line); background:var(--surface); border-radius:4px; padding:6px 12px; font-size:14px}
+.btn.primary{background:var(--navy); color:var(--navy-ink); border-color:var(--navy)}
+.btn.danger{color:var(--s3-ink); border-color:var(--s3)}
+.btn.ghost{border-color:transparent; background:transparent; color:var(--muted); padding:4px 8px}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:4px; overflow:hidden}
+.seg button{border:0; background:var(--surface); padding:5px 10px; font-size:13px; color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--navy); color:var(--navy-ink)}
+
+/* 목록 */
+.group{margin-top:16px}
+.group h3{font-family:var(--f-display); font-size:17px; margin:0 0 6px; display:flex; gap:8px; align-items:baseline}
+.group h3 small{font-family:var(--f-body); font-size:12.5px; color:var(--muted); font-weight:500; font-variant-numeric:tabular-nums}
+.list{background:var(--surface); border:1px solid var(--line); border-radius:6px}
+.row{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:10px; align-items:start; padding:10px 12px; border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row.done .main .t{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--line)}
+.seq{font-variant-numeric:tabular-nums; color:var(--muted); font-weight:600; min-width:1.6em; text-align:right}
+.main{min-width:0}
+.main .t{font-weight:600; overflow-wrap:anywhere}
+.main .m{font-size:13px; color:var(--muted); display:flex; flex-wrap:wrap; gap:2px 12px}
+.main .m b{color:var(--ink); font-weight:500}
+.main .note{font-size:13px; color:var(--muted); overflow-wrap:anywhere}
+.chip{border:0; border-radius:999px; padding:3px 10px; font-size:12.5px; font-weight:600; white-space:nowrap}
+.chip.s0{background:var(--s0); color:var(--s0-ink)} .chip.s1{background:var(--s1); color:var(--s1-ink)}
+.chip.s2{background:var(--s2); color:var(--s2-ink)} .chip.s3{background:var(--s3); color:var(--s3-ink)}
+.chip[disabled]{cursor:default}
+.lead{display:flex; gap:8px; align-items:center}
+.empty{padding:18px 14px; color:var(--muted); font-size:14px}
+
+/* 입력 폼 */
+form.edit{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 12px; padding:12px; background:var(--bg); border-top:1px solid var(--line)}
+form.edit.top{border:1px solid var(--line); border-radius:6px; margin-bottom:10px}
+form.edit label{display:flex; flex-direction:column; gap:3px; font-size:12.5px; color:var(--muted); min-width:0}
+form.edit .wide{grid-column:1 / -1}
+form.edit input,form.edit select{border:1px solid var(--line); background:var(--surface); border-radius:4px; padding:7px 9px; font-size:14.5px; width:100%; min-width:0}
+form.edit .actions{grid-column:1 / -1; display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+form.edit .actions .spacer{flex:1}
+.ro .needs-write{display:none}
+
+@media (max-width:640px){
+  .hero{grid-template-columns:1fr} .dday{text-align:left; display:flex; gap:10px; align-items:baseline}
+  .hero h1{font-size:23px}
+  .summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+  form.edit{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important; animation:none!important} }
+</style>
+
+<div class="wrap" id="app">
+  <header class="hero">
+    <div>
+      <div class="org">재안산 홍성향우회</div>
+      <h1>제10·11대 회장 이·취임식 준비</h1>
+      <div class="facts" id="facts"><span>일시 <b>미정</b></span><span>장소 <b>미정</b></span></div>
+      <button class="edit-meta needs-write" id="editMeta" type="button">일시·장소 고치기</button>
+    </div>
+    <div class="dday"><div class="n" id="ddayN">D-?</div><div class="l" id="ddayL">날짜를 넣으면 계산돼요</div></div>
+  </header>
+  <form class="edit top" id="metaForm" hidden></form>
+
+  <section class="summary" id="summary" aria-label="진행 현황"></section>
+  <p class="notice" id="status">준비 현황을 불러오는 중이에요…</p>
+
+  <nav class="tabs" role="tablist" id="tabs"></nav>
+  <div class="toolbar">
+    <span class="hint" id="hint"></span>
+    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+      <div class="seg" id="filter" hidden>
+        <button type="button" data-f="open" aria-pressed="true">남은 일</button>
+        <button type="button" data-f="all" aria-pressed="false">전체</button>
+      </div>
+      <button class="btn primary needs-write" id="addBtn" type="button">+ 추가</button>
+    </div>
+  </div>
+  <form class="edit top" id="addForm" hidden></form>
+  <div id="panel"></div>
+</div>
+
+<script>
+const CATS = ['행사장·식사','순서·진행','시상·의전','초청·연락','물품·제작','회계·인수인계','기타'];
+const SCHEMAS = {
+  tasks: { label:'할 일', hint:'상태 표시를 누르면 할 일 → 진행 중 → 완료로 바뀌어요.',
+    title:'title', group:'cat', groups:CATS,
+    status:{k:'status', opts:[['todo','할 일','s0'],['doing','진행 중','s1'],['done','완료','s2']]},
+    meta:[['owner','담당'],['due','마감']],
+    fields:[{k:'title',l:'할 일',req:1,wide:1},{k:'cat',l:'분류',type:'select',opts:CATS},{k:'owner',l:'담당'},{k:'due',l:'마감일',type:'date'},{k:'note',l:'메모',wide:1}] },
+  program: { label:'식순', hint:'순번대로 정렬돼요. 진행자가 정해지면 "확정"으로 바꿔 주세요.',
+    title:'item', group:'part', groups:['1부 기념식','2부 회장 이·취임식','3부 만찬'], seq:'seq',
+    status:{k:'status', opts:[['tbd','미정','s3'],['ok','확정','s2']]},
+    meta:[['who','진행']],
+    fields:[{k:'item',l:'순서 이름',req:1,wide:1},{k:'part',l:'부',type:'select',opts:['1부 기념식','2부 회장 이·취임식','3부 만찬']},{k:'seq',l:'순번',type:'number'},{k:'who',l:'진행·담당'},{k:'note',l:'메모',wide:1}] },
+  awards: { label:'수여 명단', hint:'감사패·표창 대상자와 준비 상태예요. 문구 확정 → 제작 중 → 준비 완료 순서로 바꿔 주세요.',
+    title:'name', group:'when', groups:['1부 5번 (감사패·표창)','2부 2번 (이임 회장 감사패)','기타'],
+    status:{k:'status', opts:[['tbd','확인 필요','s3'],['text','문구 확정','s1'],['make','제작 중','s1'],['ready','준비 완료','s2']]},
+    meta:[['role','직책'],['kind','구분'],['giver','수여자']],
+    fields:[{k:'name',l:'성명',req:1},{k:'role',l:'직책'},{k:'kind',l:'구분',type:'select',opts:['감사패','공로패','표창장 (홍성군수)','표창장 (안산시장)','꽃다발','확인 필요']},{k:'giver',l:'수여자'},{k:'when',l:'순서',type:'select',opts:['1부 5번 (감사패·표창)','2부 2번 (이임 회장 감사패)','기타']},{k:'note',l:'메모 (문구·제출서류 등)',wide:1}] },
+  supplies: { label:'준비물', hint:'미발주 → 발주함 → 입고 완료 순서로 바꿔 주세요.',
+    title:'name',
+    status:{k:'status', opts:[['none','미발주','s0'],['order','발주함','s1'],['in','입고 완료','s2']]},
+    meta:[['qty','수량'],['owner','담당']],
+    fields:[{k:'name',l:'품목',req:1},{k:'qty',l:'수량'},{k:'owner',l:'담당'},{k:'note',l:'메모',wide:1}] },
+  guests: { label:'내빈·연사', hint:'축사·격려사 요청과 참석 확인 현황이에요.',
+    title:'name', group:'part', groups:['축사','격려사','건배 제의','초청 단체','내빈'],
+    status:{k:'status', opts:[['none','미연락','s0'],['ask','요청함','s1'],['yes','참석 확정','s2'],['no','불참','s3']]},
+    meta:[['org','소속·직함'],['owner','연락 담당']],
+    fields:[{k:'name',l:'이름·단체',req:1},{k:'org',l:'소속·직함'},{k:'part',l:'역할',type:'select',opts:['축사','격려사','건배 제의','초청 단체','내빈']},{k:'owner',l:'연락 담당'},{k:'note',l:'메모',wide:1}] },
+};
+const ORDER = Object.keys(SCHEMAS);
+const META_FIELDS = [{k:'date',l:'날짜',type:'date'},{k:'time',l:'시간 (예: 오후 6시)'},{k:'place',l:'장소',wide:1},{k:'mc1',l:'1부 사회'},{k:'mc2',l:'2부 사회'},{k:'meal',l:'식대 (1인)'},{k:'budget',l:'비용 부담 (회비/취임 회장)'}];
+
+const state = { data:Object.fromEntries(ORDER.map(k=>[k,[]])), meta:{}, loaded:new Set(), tab:'tasks', filter:'open', editing:null, db:null, canWrite:true };
+try{ const t=localStorage.getItem('hs-tab'); if(t && SCHEMAS[t]) state.tab=t; const f=localStorage.getItem('hs-filter'); if(f) state.filter=f; }catch(e){}
+
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const stOpt = (sch,v)=> sch.status.opts.find(o=>o[0]===v) || sch.status.opts[0];
+const isDone = (sch,v)=> stOpt(sch,v)[2]==='s2';
+function fmtDate(d){ if(!d) return ''; const [y,m,dd]=d.split('-').map(Number); if(!y) return d; const w='일월화수목금토'[new Date(y,m-1,dd).getDay()]; return `${m}월 ${dd}일 (${w})`; }
+
+function setStatus(msg, warn){ const el=$('#status'); el.textContent=msg||''; el.classList.toggle('warn',!!warn); el.hidden=!msg; }
+
+/* ---------- 머리·요약 ---------- */
+function renderHero(){
+  const m=state.meta;
+  const facts=[['일시', m.date ? fmtDate(m.date)+(m.time?' '+m.time:'') : '미정'],['장소', m.place||'미정']];
+  if(m.mc1) facts.push(['1부 사회', m.mc1]); if(m.mc2) facts.push(['2부 사회', m.mc2]); if(m.meal) facts.push(['식대', m.meal]);
+  $('#facts').innerHTML = facts.map(([k,v])=>`<span>${k} <b>${esc(v)}</b></span>`).join('');
+  const n=$('#ddayN'), l=$('#ddayL');
+  if(m.date){ const [y,mo,d]=m.date.split('-').map(Number); const t=new Date(); t.setHours(0,0,0,0); const diff=Math.round((new Date(y,mo-1,d)-t)/864e5);
+    n.textContent = diff>0?`D-${diff}`:diff===0?'D-DAY':`D+${-diff}`; l.textContent = diff>0?'행사까지 남은 날':diff===0?'오늘이 행사날':'행사 후'; }
+  else { n.textContent='D-?'; l.textContent='날짜를 넣으면 계산돼요'; }
+}
+function renderSummary(){
+  const cards = [
+    ['할 일', 'tasks'], ['수여 준비','awards'], ['준비물','supplies'], ['내빈 확정','guests'] ];
+  $('#summary').innerHTML = cards.map(([label,k])=>{
+    const sch=SCHEMAS[k], rows=state.data[k]; const done=rows.filter(r=>isDone(sch,r[sch.status.k])).length; const pct=rows.length?Math.round(done/rows.length*100):0;
+    return `<button class="sum" type="button" data-go="${k}"><div class="k">${label}</div><div class="v">${done}<small> / ${rows.length}</small></div><div class="bar"><i style="width:${pct}%"></i></div></button>`;
+  }).join('');
+}
+
+/* ---------- 탭·목록 ---------- */
+function renderTabs(){
+  $('#tabs').innerHTML = ORDER.map(k=>{ const sch=SCHEMAS[k], rows=state.data[k]; const open=rows.filter(r=>!isDone(sch,r[sch.status.k])).length;
+    return `<button class="tab" role="tab" type="button" data-tab="${k}" aria-selected="${state.tab===k}">${sch.label}<span class="c">${open}</span></button>`; }).join('');
+  const sch=SCHEMAS[state.tab]; $('#hint').textContent=sch.hint; $('#filter').hidden = state.tab!=='tasks';
+  document.querySelectorAll('#filter button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.f===state.filter)));
+}
+function sortRows(k, rows){
+  const sch=SCHEMAS[k];
+  return [...rows].sort((a,b)=>{
+    if(sch.seq){ return (Number(a[sch.seq])||999)-(Number(b[sch.seq])||999) || (a.ts||0)-(b.ts||0); }
+    if(k==='tasks'){ const r={doing:0,todo:1,done:2}; const d=(r[a.status]??1)-(r[b.status]??1); if(d) return d; if((a.due||'z')!==(b.due||'z')) return (a.due||'z')<(b.due||'z')?-1:1; }
+    return (a.ts||0)-(b.ts||0);
+  });
+}
+function rowHTML(k, r){
+  const sch=SCHEMAS[k]; const [sv,sl,sc]=stOpt(sch, r[sch.status.k]);
+  if(state.editing===k+':'+r.id) return `<div class="row-edit">${formHTML(k, r)}</div>`;
+  const meta = sch.meta.map(([f,l])=> r[f] ? `<span>${l} <b>${esc(f==='due'?fmtDate(r[f]):r[f])}</b></span>` : '').join('');
+  return `<div class="row ${sc==='s2'?'done':''}">
+    <div class="lead">${sch.seq?`<span class="seq">${esc(r[sch.seq]??'')}</span>`:''}<button class="chip ${sc}" type="button" data-cycle="${k}:${r.id}" ${state.canWrite?'':'disabled'} aria-label="상태: ${sl}. 눌러서 다음 단계로">${sl}</button></div>
+    <div class="main"><div class="t">${esc(r[sch.title])}</div>${meta?`<div class="m">${meta}</div>`:''}${r.note?`<div class="note">${esc(r.note)}</div>`:''}</div>
+    <button class="btn ghost needs-write" type="button" data-edit="${k}:${r.id}">고치기</button>
+  </div>`;
+}
+function renderPanel(){
+  const k=state.tab, sch=SCHEMAS[k]; let rows=state.data[k];
+  if(k==='tasks' && state.filter==='open') rows=rows.filter(r=>!isDone(sch,r.status) || state.editing==='tasks:'+r.id);
+  rows=sortRows(k, rows);
+  let html='';
+  if(!state.data[k].length){
+    html = `<div class="list"><div class="empty">${state.loaded.has(k)?`아직 등록된 ${sch.label}이(가) 없어요. 오른쪽 위 <b>+ 추가</b>로 첫 항목을 넣어 주세요.`:'불러오는 중…'}</div></div>`;
+  } else if(sch.group){
+    const groups=[...sch.groups, ...new Set(rows.map(r=>r[sch.group]).filter(g=>g && !sch.groups.includes(g)))];
+    for(const g of groups){ const gr=rows.filter(r=>(r[sch.group]||sch.groups[sch.groups.length-1])===g); if(!gr.length) continue;
+      const all=state.data[k].filter(r=>(r[sch.group]||sch.groups[sch.groups.length-1])===g); const dn=all.filter(r=>isDone(sch,r[sch.status.k])).length;
+      html += `<section class="group"><h3>${esc(g)} <small>${dn}/${all.length}</small></h3><div class="list">${gr.map(r=>rowHTML(k,r)).join('')}</div></section>`; }
+    if(!html) html=`<div class="list"><div class="empty">남은 일이 없어요. 모두 완료했습니다.</div></div>`;
+  } else {
+    html = `<div class="list">${rows.map(r=>rowHTML(k,r)).join('')}</div>`;
+  }
+  $('#panel').innerHTML=html;
+}
+function render(){ renderHero(); renderSummary(); renderTabs(); renderPanel(); document.getElementById('app').classList.toggle('ro', !state.canWrite); }
+
+/* ---------- 입력 폼 ---------- */
+function fieldHTML(f, v, prefix){
+  const id=`${prefix}-${f.k}`;
+  let input;
+  if(f.type==='select') input=`<select id="${id}" name="${f.k}">${f.opts.map(o=>`<option ${o===v?'selected':''}>${esc(o)}</option>`).join('')}</select>`;
+  else input=`<input id="${id}" name="${f.k}" type="${f.type||'text'}" value="${esc(v??'')}" ${f.req?'required':''} ${f.type==='number'?'inputmode="numeric" step="1"':''}>`;
+  return `<label class="${f.wide?'wide':''}" for="${id}">${f.l}${input}</label>`;
+}
+function formHTML(k, r){
+  const sch=SCHEMAS[k]; const isNew=!r; const prefix=isNew?`new-${k}`:`e-${r.id}`;
+  const fields=sch.fields.map(f=>fieldHTML(f, r? r[f.k] : (f.type==='select'? (k==='tasks'&&f.k==='cat'?CATS[0]:f.opts[0]) : ''), prefix)).join('');
+  const st=`<label for="${prefix}-st">상태<select id="${prefix}-st" name="${sch.status.k}">${sch.status.opts.map(([v,l])=>`<option value="${v}" ${(r?r[sch.status.k]:sch.status.opts[0][0])===v?'selected':''}>${l}</option>`).join('')}</select></label>`;
+  return `<form class="edit" data-form="${k}" data-id="${r?r.id:''}">${fields}${st}
+    <div class="actions">${r?`<button class="btn danger" type="button" data-del="${k}:${r.id}">삭제</button><span class="spacer"></span>`:''}
+      <button class="btn" type="button" data-cancel>취소</button><button class="btn primary" type="submit">${isNew?'추가':'저장'}</button></div></form>`;
+}
+function readForm(form){
+  const out={}; new FormData(form).forEach((v,k)=>{ out[k]=typeof v==='string'?v.trim():v; });
+  const sch=SCHEMAS[form.dataset.form]; if(sch && sch.seq && out[sch.seq]!=='' && out[sch.seq]!=null) out[sch.seq]=Number(out[sch.seq]);
+  return out;
+}
+
+/* ---------- 저장 ---------- */
+async function save(fn, okMsg){
+  if(!state.db){ setStatus('이 화면에서는 저장할 수 없어요. claude.ai에 로그인한 상태로 열어 주세요.', true); return false; }
+  try{ await fn(); if(okMsg) setStatus(okMsg); return true; }
+  catch(e){
+    if(e && e.code==='invalid_argument'){ state.canWrite=false; render(); setStatus('보기 권한만 있어서 고칠 수 없어요. 작성자에게 편집 권한을 요청해 주세요.', true); }
+    else if(e && e.code==='quota_exceeded') setStatus('저장 공간이 가득 찼어요. 끝난 항목 몇 개를 지운 뒤 다시 해 주세요.', true);
+    else setStatus('저장하지 못했어요. 잠시 후 다시 눌러 주세요.', true);
+    return false;
+  }
+}
+
+/* ---------- 이벤트 ---------- */
+document.addEventListener('click', async ev=>{
+  const t=ev.target.closest('button'); if(!t) return;
+  if(t.dataset.tab||t.dataset.go){ state.tab=t.dataset.tab||t.dataset.go; state.editing=null; $('#addForm').hidden=true; try{localStorage.setItem('hs-tab',state.tab)}catch(e){} render(); return; }
+  if(t.dataset.f){ state.filter=t.dataset.f; try{localStorage.setItem('hs-filter',state.filter)}catch(e){} render(); return; }
+  if(t.id==='addBtn'){ const f=$('#addForm'); if(!f.hidden){ f.hidden=true; return; } f.outerHTML = formHTML(state.tab, null).replace('<form class="edit"','<form class="edit top" id="addForm"'); $('#addForm').querySelector('input,select')?.focus(); return; }
+  if(t.id==='editMeta'){ const f=$('#metaForm'); if(!f.hidden){ f.hidden=true; return; }
+    f.innerHTML = META_FIELDS.map(fd=>fieldHTML(fd, state.meta[fd.k], 'meta')).join('') + `<div class="actions"><button class="btn" type="button" data-cancel-meta>취소</button><button class="btn primary" type="submit">저장</button></div>`; f.hidden=false; f.querySelector('input')?.focus(); return; }
+  if(t.hasAttribute('data-cancel-meta')){ $('#metaForm').hidden=true; return; }
+  if(t.hasAttribute('data-cancel')){ const form=t.closest('form'); if(form.id==='addForm'){ form.hidden=true; } else { state.editing=null; renderPanel(); } return; }
+  if(t.dataset.edit){ state.editing=t.dataset.edit; renderPanel(); document.querySelector('.row-edit input')?.focus(); return; }
+  if(t.dataset.cycle){ const [k,id]=t.dataset.cycle.split(':'); const sch=SCHEMAS[k]; const r=state.data[k].find(x=>x.id===id); if(!r) return;
+    const opts=sch.status.opts; const i=opts.findIndex(o=>o[0]===r[sch.status.k]); const next=opts[(i+1)%opts.length][0];
+    t.disabled=true; await save(()=>state.db.doc(`${k}/${id}`).update({[sch.status.k]:next})); t.disabled=false; return; }
+  if(t.dataset.del){ if(t.dataset.armed!=='1'){ t.dataset.armed='1'; t.textContent='한 번 더 누르면 삭제'; setTimeout(()=>{ if(t.isConnected){ t.dataset.armed=''; t.textContent='삭제'; } },4000); return; }
+    const [k,id]=t.dataset.del.split(':'); state.editing=null; await save(()=>state.db.doc(`${k}/${id}`).delete(), '삭제했어요.'); return; }
+});
+document.addEventListener('submit', async ev=>{
+  ev.preventDefault(); const form=ev.target;
+  if(form.id==='metaForm'){ const data=readForm(form); const ok=await save(()=>state.db.doc('meta/event').set({...state.meta, ...data}), '일시·장소를 저장했어요.'); if(ok) form.hidden=true; return; }
+  const k=form.dataset.form; const data=readForm(form); const btn=form.querySelector('[type=submit]'); btn.disabled=true;
+  let ok;
+  if(form.dataset.id){ ok=await save(()=>state.db.doc(`${k}/${form.dataset.id}`).update(data), '저장했어요.'); if(ok){ state.editing=null; renderPanel(); } }
+  else { ok=await save(()=>state.db.collection(k).add({...data, ts:Date.now()}), '추가했어요.'); if(ok){ form.reset(); form.hidden=true; } }
+  if(btn.isConnected) btn.disabled=false;
+});
+
+/* ---------- 연결 ---------- */
+render();
+(async ()=>{
+  const db = await claude.use('db');
+  if(!db){ setStatus('저장소에 연결되지 않았어요. claude.ai에 로그인한 상태로 열면 함께 고칠 수 있어요.', true); ORDER.forEach(k=>state.loaded.add(k)); state.canWrite=false; render(); return; }
+  state.db=db;
+  const user = await claude.use('user');
+  if(user){ try{ const c=await user.can('data.write'); if(c===false){ state.canWrite=false; setStatus('보기 전용으로 열렸어요. 고치려면 작성자에게 편집 권한을 요청해 주세요.'); } }catch(e){} }
+  const timer=setTimeout(()=>{ if(state.loaded.size<ORDER.length) setStatus('저장소 응답이 늦어요. 보이는 내용이 최신이 아닐 수 있어요.', true); },10000);
+  const onErr = e=>{ clearTimeout(timer); setStatus(e && e.code==='revoked' ? '접근 권한이 바뀌어 더 이상 불러올 수 없어요.' : '일부 목록을 불러오지 못했어요. 페이지를 새로 열어 주세요.', true); };
+  const doneLoading=()=>{ if(state.loaded.size>=ORDER.length){ clearTimeout(timer); if(state.canWrite) setStatus(''); } };
+  for(const k of ORDER){
+    db.collection(k).onSnapshot(snap=>{ state.data[k]=snap.docs.map(d=>({id:d.id, ...d.data()})); if(!snap.metadata.fromCache) state.loaded.add(k); doneLoading();
+      if(state.editing && state.editing.startsWith(k+':')){ renderHero(); renderSummary(); renderTabs(); return; } render(); }, onErr);
+  }
+  db.doc('meta/event').onSnapshot(s=>{ state.meta=s.exists?{...s.data()}:{}; renderHero(); }, onErr);
+})();
+</script>
